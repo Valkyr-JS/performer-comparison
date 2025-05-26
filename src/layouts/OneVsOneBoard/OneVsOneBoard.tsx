@@ -7,7 +7,7 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = () => {
   return (
     <section className={styles["one-vs-one-board"]}>
       <header>
-        <h1>1 vs. 1</h1>
+        <h1>One-on-One</h1>
         <button>*</button>
       </header>
       <div className={styles["profiles"]}>
