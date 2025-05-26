@@ -1,4 +1,43 @@
+@use "../../scss/spacing";
+
 .one-vs-one-board {
+  display: grid;
+  grid-template-rows:
+    [board-top header-top] auto [header-bottom
+    profiles-top] 1fr [profiles-bottom
+    tools-top] auto [tools-bottom board-bottom];
+  gap: spacing.$default;
+
   width: 100%;
   height: 100vh;
+  padding: spacing.$default;
+
+  header {
+    grid-row: header-top/header-bottom;
+
+    display: flex;
+    align-items: start;
+
+    button {
+      margin-left: auto;
+    }
+  }
+}
+
+.profiles {
+  grid-row: profiles-top/profiles-bottom;
+
+  display: grid;
+  grid-template-rows:
+    [profiles-top profile-1-top] 1fr [profile-1-bottom
+    profile-2-top] 1fr [profile-2-bottom profiles-bottom];
+  gap: spacing.$default;
+  justify-content: center;
+  align-items: center;
+}
+
+.tools {
+  grid-row: tools-top/tools-bottom;
+  display: flex;
+  justify-content: center;
 }
