@@ -24,7 +24,7 @@
   }
 
   h1 {
-    font-size: 1.75rem;
+    font-size: 1.75rem; // Matches Stash scene pages
   }
 }
 
@@ -32,7 +32,7 @@
   grid-row: profiles-top/profiles-bottom;
 
   display: grid;
-  grid-template-rows:
+  grid-template-columns:
     [profiles-top profile-1-top] 1fr [profile-1-bottom
     profile-2-top] 1fr [profile-2-bottom profiles-bottom];
   gap: spacing.$default;
@@ -44,4 +44,22 @@
   grid-row: tools-top/tools-bottom;
   display: flex;
   justify-content: center;
+}
+
+// ! TEMP
+.profile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+  h2 {
+    font-size: 1.25rem;
+  }
+  img {
+    width: 100%;
+  }
+
+  button {
+    margin-top: 10px;
+  }
 }
