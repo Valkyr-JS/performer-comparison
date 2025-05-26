@@ -13,7 +13,11 @@ type Story = StoryObj<typeof meta>;
 
 export const ExampleA: Story = {
   args: {
-    profileImage: serverURL + "/performer/12/image?t=1743556430",
-    images: [],
+    images: [
+      serverURL + "/performer/12/image?t=1743556430",
+      serverURL + "/image/38822/image?t=1746814733",
+      serverURL + "http://image/109403/image?t=1746367355",
+    ],
+    name: "Danielle",
   },
 };
