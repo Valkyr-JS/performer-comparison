@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { initialize, mswLoader } from "msw-storybook-addon";
 import { handlers } from "../mocks/handlers";
+import "./stash.index.css"
 
 /*
  * Initializes MSW
