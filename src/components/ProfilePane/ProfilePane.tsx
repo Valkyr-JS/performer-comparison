@@ -18,7 +18,7 @@ const ProfilePane: React.FC<ProfilePaneProps> = (props) => {
           alt={`${props.name} image ${currentIndex + 1}`}
         />
       </div>
-      <ul>
+      <ul className={styles["image-options"]}>
         {props.images.map((src, i) => (
           <ImageOption
             name={props.name}
@@ -45,7 +45,7 @@ interface ImageOptionProps {
 
 const ImageOption: React.FC<ImageOptionProps> = (props) => {
   return (
-    <li>
+    <li className={styles["image-option"]}>
       <button type="button" onClick={props.onClick}>
         <img src={props.src} alt={`${props.name} image ${props.index + 1}`} />
       </button>
