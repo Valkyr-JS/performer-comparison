@@ -4,6 +4,7 @@
   display: grid;
   grid-template-rows:
     [board-top header-top] auto [header-bottom
+    filters-top] auto [filters-bottom
     profiles-top] 1fr [profiles-bottom
     tools-top] auto [tools-bottom board-bottom];
   gap: spacing.$default;
@@ -14,13 +15,6 @@
 
   header {
     grid-row: header-top/header-bottom;
-
-    display: flex;
-    align-items: start;
-
-    button {
-      margin-left: auto;
-    }
   }
 
   h1 {
@@ -40,23 +34,30 @@
   align-items: center;
 }
 
+.filters {
+  grid-row: filters-top/filters-bottom;
+}
+
 .tools {
   grid-row: tools-top/tools-bottom;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 }
 
 // ! TEMP
 .profile {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
 
   h2 {
     font-size: 1.25rem;
   }
   img {
     width: 100%;
+    filter: blur(5px);
   }
 
   button {
