@@ -24,7 +24,7 @@
   },
   "homepage": "https://github.com/Valkyr-JS/performer-comparison#readme",
   "peerDependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^3.13.8",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "mousetrap": "^1.6.5",
@@ -67,5 +67,8 @@
     "storybook-dark-mode": "^4.0.2",
     "typescript": "^5.8.2",
     "write-yaml-file": "^5.0.0"
+  },
+  "dependencies": {
+    "graphql": "^16.11.0"
   }
 }
