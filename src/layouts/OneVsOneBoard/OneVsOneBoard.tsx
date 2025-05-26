@@ -46,7 +46,9 @@ const Profile = (props: ProfileProps) => {
       <img src={src} alt={props.name} />
       <div className={styles["button-list"]}>
         <button type="button">Select</button>
-        <button type="button">Change img</button>
+        <button type="button">
+          <span className="sr-only">Change image for {props.name}</span>
+        </button>
       </div>
     </div>
   );
