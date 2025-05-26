@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./ProfilePane.module.scss";
 
 interface ProfilePaneProps {
@@ -9,10 +9,13 @@ interface ProfilePaneProps {
 }
 
 const ProfilePane: React.FC<ProfilePaneProps> = (props) => {
+  const images = [props.profileImage, ...props.images];
+  const [current, _setCurrent] = useState(0);
+
   return (
     <div className={styles["profile-pane"]}>
       <div className={styles["active-image"]}>
-        <img src={props.profileImage} />
+        <img src={images[current]} />
       </div>
       <div>Image selector</div>
     </div>
