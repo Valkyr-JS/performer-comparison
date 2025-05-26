@@ -5,6 +5,8 @@ interface ProfilePaneProps {
   /** Up to three random images the performer is tagged in. */
   images: string[];
   name: string;
+  /** The thumbnails for the provided images. */
+  thumbs: string[];
 }
 
 const ProfilePane: React.FC<ProfilePaneProps> = (props) => {
@@ -19,7 +21,7 @@ const ProfilePane: React.FC<ProfilePaneProps> = (props) => {
         />
       </div>
       <ul className={styles["image-options"]}>
-        {props.images.map((src, i) => (
+        {props.thumbs.map((src, i) => (
           <ImageOption
             name={props.name}
             index={i}

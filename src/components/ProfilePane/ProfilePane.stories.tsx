@@ -19,5 +19,10 @@ export const ExampleA: Story = {
       serverURL + "/image/109403/image?t=1746367355",
     ],
     name: "Danielle",
+    thumbs: [
+      serverURL + "/performer/12/image?t=1743556430",
+      serverURL + "/image/38822/thumbnail?t=1746814733",
+      serverURL + "/image/109403/thumbnail?t=1746367355",
+    ],
   },
 };
