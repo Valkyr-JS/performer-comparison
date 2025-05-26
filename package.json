@@ -1,7 +1,7 @@
 {
-  "name": "stashplugintemplate",
+  "name": "performer-comparison",
   "version": "0.1.0",
-  "description": "A template for creating plugins for Stash using the native plugin API.",
+  "description": "A Stash tool/game for ranking performers.",
   "main": "./src/main.ts",
   "type": "commonjs",
   "scripts": {
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Valkyr-JS/StashPluginTemplate.git"
+    "url": "git+https://github.com/Valkyr-JS/performer-comparison.git"
   },
   "author": "Valkyr-JS",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/Valkyr-JS/StashPluginTemplate/issues"
+    "url": "https://github.com/Valkyr-JS/performer-comparison/issues"
   },
-  "homepage": "https://github.com/Valkyr-JS/StashPluginTemplate#readme",
+  "homepage": "https://github.com/Valkyr-JS/performer-comparison#readme",
   "peerDependencies": {
     "@apollo/client": "^3.13.4",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
