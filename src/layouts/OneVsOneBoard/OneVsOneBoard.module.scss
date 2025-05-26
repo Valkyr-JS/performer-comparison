@@ -63,4 +63,9 @@
   button {
     margin-top: 10px;
   }
+
+  .button-list {
+    display: flex;
+    flex-direction: column;
+  }
 }

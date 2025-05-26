@@ -46,8 +46,9 @@ const Profile = (props: ProfileProps) => {
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
       <img src={props.image} alt="" />
-      <div>
+      <div className={styles["button-list"]}>
         <button type="button">Select</button>
+        <button type="button">Change img</button>
       </div>
     </div>
   );
