@@ -11,6 +11,7 @@ const preview: Preview = {
       },
       sort: "requiredFirst",
     },
+    layout: "fullscreen",
     viewport: {
       viewports: INITIAL_VIEWPORTS,
       defaultViewport: "iphone5",
