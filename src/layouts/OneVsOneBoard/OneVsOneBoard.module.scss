@@ -50,14 +50,12 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
 
   h2 {
     font-size: 1.25rem;
   }
   img {
     width: 100%;
-    filter: blur(5px);
   }
 
   button {

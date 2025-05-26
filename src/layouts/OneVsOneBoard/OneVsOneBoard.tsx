@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./OneVsOneBoard.module.scss";
 
-interface OneVsOneBoardProps {}
+interface OneVsOneBoardProps {
+  profiles: [ProfileProps, ProfileProps];
+}
 
-const url = import.meta.env.STORYBOOK_STASH_SERVER;
-
-const OneVsOneBoard: React.FC<OneVsOneBoardProps> = () => {
+const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
   return (
     <section className={styles["one-vs-one-board"]}>
       <header>
@@ -15,14 +15,8 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = () => {
         <button style={{ width: "100%" }}>Update filters</button>
       </div>
       <div className={styles["profiles"]}>
-        <Profile
-          name="Performer A"
-          image={url + "/performer/91/image?t=1746466658"}
-        />
-        <Profile
-          name="Performer B"
-          image={url + "/performer/1/image?t=1748116759"}
-        />
+        <Profile {...props.profiles[0]} />
+        <Profile {...props.profiles[1]} />
       </div>
       <div className={styles["tools"]}>
         <button style={{ marginBottom: "10px" }}>Undo</button>
@@ -34,18 +28,22 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = () => {
 
 export default OneVsOneBoard;
 
-/** TEMP */
+/* ------------------------------------------- Profile ------------------------------------------ */
 
 interface ProfileProps {
-  image: string;
-  name: string;
+  /** The performer's profile image. */
+  cover: Performer["image_path"];
+  id: Performer["id"];
+  name: Performer["name"];
 }
 
 const Profile = (props: ProfileProps) => {
+  const [src, _setSrc] = useState(props.cover ?? "FALLBACK-IMAGE-SRC");
+
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
-      <img src={props.image} alt="" />
+      <img src={src} alt={props.name} />
       <div className={styles["button-list"]}>
         <button type="button">Select</button>
         <button type="button">Change img</button>
