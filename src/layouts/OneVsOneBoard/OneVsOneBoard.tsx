@@ -3,10 +3,13 @@ import styles from "./OneVsOneBoard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
+import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 
 interface OneVsOneBoardProps {
   profiles: [ProfileProps, ProfileProps];
+  /** Executes when the user click the pause button. */
+  clickPauseHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the skip button. */
   clickSkipHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the stop button. */
@@ -23,13 +26,17 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         <Profile {...props.profiles[1]} />
       </div>
       <div className={styles["tools"]}>
+        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
+          <span className="sr-only">Undo</span>
+          <FontAwesomeIcon icon={faRotateLeft} />
+        </button>
         <button className="btn btn-danger" onClick={props.clickStopHandler}>
           <span className="sr-only">End tournament</span>
           <FontAwesomeIcon icon={faStop} />
         </button>
-        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
-          <span className="sr-only">Undo</span>
-          <FontAwesomeIcon icon={faRotateLeft} />
+        <button className="btn btn-secondary" onClick={props.clickPauseHandler}>
+          <span className="sr-only">Pause tournament</span>
+          <FontAwesomeIcon icon={faPause} />
         </button>
         <button className="btn btn-secondary" onClick={props.clickSkipHandler}>
           <span className="sr-only">Skip</span>
@@ -47,15 +54,15 @@ export default OneVsOneBoard;
 /* ---------------------------------------------------------------------------------------------- */
 
 interface ProfileProps {
+  /** Executes when the user clicks to change the current performer image. */
+  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   id: Performer["id"];
   imageSrc: string;
   name: Performer["name"];
   /** The performer's rank before starting the tournament. */
   rank: number;
-  /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
-  /** Executes when the user selects the winning performer. */
-  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
 }
 
 const Profile = (props: ProfileProps) => {
