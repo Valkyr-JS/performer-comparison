@@ -8,7 +8,11 @@ import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
-  profiles: [ProfileProps, ProfileProps];
+  profiles: [GlickoPerformerData, GlickoPerformerData];
+  /** Executes when the user clicks to change the current performer image. */
+  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the pause button. */
   clickPauseHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the skip button. */
@@ -23,8 +27,16 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
   return (
     <section className={styles["one-vs-one-board"]}>
       <div className={styles["profiles"]}>
-        <Profile {...props.profiles[0]} />
-        <Profile {...props.profiles[1]} />
+        <Profile
+          {...props.profiles[0]}
+          changeImageHandler={props.changeImageHandler}
+          clickSelectHandler={props.clickSelectHandler}
+        />
+        <Profile
+          {...props.profiles[1]}
+          changeImageHandler={props.changeImageHandler}
+          clickSelectHandler={props.clickSelectHandler}
+        />
       </div>
       <div className={styles["tools"]}>
         <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
@@ -54,19 +66,11 @@ export default OneVsOneBoard;
 /*                                        Profile component                                       */
 /* ---------------------------------------------------------------------------------------------- */
 
-interface ProfileProps {
+interface ProfileProps extends GlickoPerformerData {
   /** Executes when the user clicks to change the current performer image. */
   changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
-  /** The performer's Stash ID. */
-  id: Performer["id"];
-  /** The src for the performer image. */
-  imageSrc: string;
-  /** The performer's name. */
-  name: Performer["name"];
-  /** The performer's rank before starting the tournament. */
-  rank: number;
 }
 
 const Profile = (props: ProfileProps) => {

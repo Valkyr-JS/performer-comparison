@@ -12,7 +12,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     filter: {
-      genders: ["FEMALE"],
+      genders: ["FEMALE" as GenderEnum],
       limit: 10,
     },
   },
