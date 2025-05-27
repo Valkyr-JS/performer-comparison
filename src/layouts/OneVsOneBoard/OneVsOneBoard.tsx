@@ -4,13 +4,10 @@ import { useQuery, gql } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
-import { faFilter } from "@fortawesome/free-solid-svg-icons/faFilter";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 
 interface OneVsOneBoardProps {
   profiles: [PerformerData, PerformerData];
-  /** Executes when the user clicks the filters button. */
-  clickFiltersHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the skip button. */
@@ -31,7 +28,7 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
   return (
     <section className={styles["one-vs-one-board"]}>
       <header>
-        <h1>One-on-One</h1>
+        <h1>Ranking tournament</h1>
       </header>
       <div className={styles["profiles"]}>
         <Profile
@@ -45,15 +42,8 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
       </div>
       <div className={styles["tools"]}>
         <button className="btn btn-danger" onClick={props.clickStopHandler}>
-          <span className="sr-only">Stop</span>
+          <span className="sr-only">End tournament</span>
           <FontAwesomeIcon icon={faStop} />
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={props.clickFiltersHandler}
-        >
-          <span className="sr-only">Filters</span>
-          <FontAwesomeIcon icon={faFilter} />
         </button>
         <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
           <span className="sr-only">Undo</span>
@@ -63,9 +53,6 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
           <span className="sr-only">Skip</span>
           <FontAwesomeIcon icon={faForwardStep} />
         </button>
-      </div>
-      <div className={styles["links"]}>
-        <a href="#">Leaderboard</a>
       </div>
     </section>
   );
