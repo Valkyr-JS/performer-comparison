@@ -4,6 +4,9 @@ import ProgressBoard from "./ProgressBoard";
 const meta = {
   title: "Components/Progress board",
   component: ProgressBoard,
+  args: {
+    title: "Progress board",
+  },
 } satisfies Meta<typeof ProgressBoard>;
 
 export default meta;
