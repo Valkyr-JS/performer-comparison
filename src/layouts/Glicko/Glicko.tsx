@@ -3,6 +3,7 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import OneVsOneBoard from "../../components/OneVsOneBoard/OneVsOneBoard";
 import { GET_PERFORMER_IMAGE, GET_PERFORMERS } from "../../apollo/queries";
 import styles from "./Glicko.module.scss";
+import { GLICKO_RATING_DEFAULT } from "../../constants";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -30,13 +31,15 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   useEffect(() => {
     if (!loading && !error) {
       // First format the fetched data
-      const formattedData = data.findPerformers.performers.map(
-        (p: Performer) => {
+      const formattedData = (data.findPerformers.performers as Performer[]).map(
+        (p) => {
           return {
             id: p.id,
             imageSrc: p.image_path ?? "",
             name: p.name,
-            rank: (p.custom_fields as PerformerCustomFields).glicko_rating,
+            rank:
+              (p.custom_fields as PerformerCustomFields).glicko_rating ??
+              GLICKO_RATING_DEFAULT,
           };
         }
       );
