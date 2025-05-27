@@ -3,7 +3,8 @@ import styles from "./ProgressBoard.module.scss";
 
 interface ProgressBoardProps {
   columnTitles: [string, string];
-  tableData: [string, string][];
+  /** The column data, and the index of the winner. */
+  tableData: [optionA: string, optionB: string, winner: 0 | 1][];
   title: string;
 }
 
