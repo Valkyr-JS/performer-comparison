@@ -10,7 +10,7 @@ interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
   profiles: [GlickoPerformerData, GlickoPerformerData];
   /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
+  changeImageHandler: (id: string) => void;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the pause button. */
@@ -68,12 +68,14 @@ export default OneVsOneBoard;
 
 interface ProfileProps extends GlickoPerformerData {
   /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
+  changeImageHandler: (id: string) => void;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
 }
 
 const Profile = (props: ProfileProps) => {
+  const handleImageChange = () => props.changeImageHandler(props.id);
+
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
@@ -92,7 +94,7 @@ const Profile = (props: ProfileProps) => {
         <button
           className="btn btn-secondary"
           type="button"
-          onClick={props.changeImageHandler}
+          onClick={handleImageChange}
         >
           <span className="sr-only">Change image for {props.name}</span>
           New image

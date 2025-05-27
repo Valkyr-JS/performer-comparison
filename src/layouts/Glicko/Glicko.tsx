@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import OneVsOneBoard from "../../components/OneVsOneBoard/OneVsOneBoard";
-import { GET_PERFORMERS } from "../../apollo/queries";
+import { GET_PERFORMER_IMAGE, GET_PERFORMERS } from "../../apollo/queries";
 import styles from "./Glicko.module.scss";
 
 interface GlickoProps {
@@ -13,40 +13,58 @@ interface GlickoProps {
 }
 
 const Glicko: React.FC<GlickoProps> = (props) => {
+  /* -------------------------------------------- Setup ------------------------------------------- */
+
   const { loading, error, data } = useQuery(GET_PERFORMERS, {
     variables: { ...props.filter },
   });
 
-  // The current matchup data
-  const [matchup, setMatchup] = useState<
-    [GlickoPerformerData, GlickoPerformerData] | null
-  >(null);
+  const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
 
-  // Update the matchup data with the first two performers as soon as it's
-  // loaded.
+  const [allPerformers, setAllPerformers] = useState<GlickoPerformerData[]>([]);
+
+  // The current matchup data
+  const [matchup, setMatchup] = useState<[number, number] | null>(null);
+
+  // Once data is available, update the required data
   useEffect(() => {
-    if (!loading && !error) setMatchup([performers[0], performers[1]]);
+    if (!loading && !error) {
+      // First format the fetched data
+      const formattedData = data.findPerformers.performers.map(
+        (p: Performer) => {
+          return {
+            id: p.id,
+            imageSrc: p.image_path ?? "",
+            name: p.name,
+            rank: (p.custom_fields as PerformerCustomFields).glicko_rating,
+          };
+        }
+      );
+      setAllPerformers(formattedData);
+
+      // Now set the first matchup using the first two performer in the list.
+      setMatchup([0, 1]);
+    }
   }, [loading]);
 
-  if (loading || error) return null;
+  if (loading || error || matchup === null) return null;
 
-  // Format fetched data
-  const performers: GlickoPerformerData[] = data.findPerformers.performers.map(
-    (p: Performer) => {
-      return {
-        id: p.id,
-        imageSrc: p.image_path ?? "",
-        name: p.name,
-        rank: (p.custom_fields as PerformerCustomFields).glicko_rating,
-      };
-    }
-  );
+  /* ------------------------------------- Handle image change ------------------------------------ */
 
-  if (matchup === null) return null;
+  const handleImageChange = async (id: string) => {
+    getPerformerImage({ variables: { performerID: id } }).then((res) => {
+      const updatedPerformers = allPerformers.map((p) => {
+        return p.id === id
+          ? { ...p, imageSrc: res.data.findImages.images[0].paths.thumbnail }
+          : p;
+      });
+      setAllPerformers(updatedPerformers);
 
-  const handleImageChange: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleImageChange");
+      // Referch to clear the cache
+      res.refetch();
+    });
   };
+
   const handlePause: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handlePause");
   };
@@ -66,7 +84,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   return (
     <main className={styles.glicko}>
       <OneVsOneBoard
-        profiles={matchup}
+        profiles={[allPerformers[matchup[0]], allPerformers[matchup[1]]]}
         changeImageHandler={handleImageChange}
         clickSelectHandler={handleSelect}
         clickPauseHandler={handlePause}
