@@ -2,10 +2,10 @@ import React from "react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
 import { PropsWithChildren } from "react";
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
   uri:
     process.env.NODE_ENV === "development"
-      ? process.env["STASH_SERVER"] + "/graphql"
+      ? import.meta.env.STORYBOOK_STASH_SERVER + "/graphql"
       : "/graphql",
   cache: new InMemoryCache(),
 });
