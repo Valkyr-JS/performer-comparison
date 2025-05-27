@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import styles from "./OneVsOneBoard.module.scss";
 import { useQuery, gql } from "@apollo/client";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 
 interface OneVsOneBoardProps {
   profiles: [PerformerData, PerformerData];
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
+  /** Executes when the user click the skip button. */
+  clickSkipHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** Executes when the user click the undo button. */
+  clickUndoHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
 
 interface PerformerData {
@@ -34,11 +41,17 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         />
       </div>
       <div className={styles["tools"]}>
-        <div style={{ marginBottom: "10px" }}>
-          <button style={{ marginRight: "10px" }}>Undo</button>
-          <button>Skip</button>
-        </div>
-        <button>Leaderboard</button>
+        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
+          <span className="sr-only">Undo</span>
+          <FontAwesomeIcon icon={faRotateLeft} />
+        </button>
+        <button className="btn btn-secondary" onClick={props.clickSkipHandler}>
+          <span className="sr-only">Skip</span>
+          <FontAwesomeIcon icon={faForwardStep} />
+        </button>
+      </div>
+      <div className={styles["links"]}>
+        <a href="#">Leaderboard</a>
       </div>
     </section>
   );

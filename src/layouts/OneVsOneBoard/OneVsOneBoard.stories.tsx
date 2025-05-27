@@ -9,6 +9,8 @@ const meta = {
   component: OneVsOneBoard,
   args: {
     clickSelectHandler: fn(),
+    clickSkipHandler: fn(),
+    clickUndoHandler: fn(),
     profiles: [
       {
         id: "12",

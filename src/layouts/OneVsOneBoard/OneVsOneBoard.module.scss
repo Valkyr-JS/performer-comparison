@@ -1,3 +1,4 @@
+@use "../../scss/helpers";
 @use "../../scss/spacing";
 
 .one-vs-one-board {
@@ -6,7 +7,8 @@
     [board-top header-top] auto [header-bottom
     filters-top] auto [filters-bottom
     profiles-top] 1fr [profiles-bottom
-    tools-top] auto [tools-bottom board-bottom];
+    tools-top] auto [tools-bottom
+    links-top] auto [links-bottom board-bottom];
   gap: spacing.$default;
 
   width: 100%;
@@ -20,29 +22,40 @@
   h1 {
     font-size: 1.75rem; // Matches Stash scene pages
   }
-}
 
-.profiles {
-  grid-row: profiles-top/profiles-bottom;
+  .profiles {
+    grid-row: profiles-top/profiles-bottom;
 
-  display: grid;
-  grid-template-columns:
-    [profiles-top profile-1-top] 1fr [profile-1-bottom
-    profile-2-top] 1fr [profile-2-bottom profiles-bottom];
-  gap: spacing.$default;
-  justify-content: center;
-  align-items: center;
-}
+    display: grid;
+    grid-template-columns:
+      [profiles-top profile-1-top] 1fr [profile-1-bottom
+      profile-2-top] 1fr [profile-2-bottom profiles-bottom];
+    gap: spacing.$default;
+    justify-content: center;
+    align-items: center;
+  }
 
-.filters {
-  grid-row: filters-top/filters-bottom;
-}
+  .filters {
+    grid-row: filters-top/filters-bottom;
+  }
 
-.tools {
-  grid-row: tools-top/tools-bottom;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  .tools {
+    grid-row: tools-top/tools-bottom;
+    display: flex;
+    justify-content: center;
+    gap: spacing.$default;
+
+    button {
+      min-height: helpers.pxToRem(40);
+      min-width: helpers.pxToRem(40);
+    }
+  }
+
+  .links {
+    grid-row: links-top/links-bottom;
+    display: flex;
+    justify-content: center;
+  }
 }
 
 .profile {
