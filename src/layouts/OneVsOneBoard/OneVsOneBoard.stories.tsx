@@ -8,6 +8,7 @@ const meta = {
   title: "Boards/One vs. One",
   component: OneVsOneBoard,
   args: {
+    clickFiltersHandler: fn(),
     clickSelectHandler: fn(),
     clickSkipHandler: fn(),
     clickUndoHandler: fn(),

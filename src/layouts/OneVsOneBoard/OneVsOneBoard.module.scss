@@ -5,7 +5,6 @@
   display: grid;
   grid-template-rows:
     [board-top header-top] auto [header-bottom
-    filters-top] auto [filters-bottom
     profiles-top] 1fr [profiles-bottom
     tools-top] auto [tools-bottom
     links-top] auto [links-bottom board-bottom];
@@ -33,10 +32,6 @@
     gap: spacing.$default;
     justify-content: center;
     align-items: center;
-  }
-
-  .filters {
-    grid-row: filters-top/filters-bottom;
   }
 
   .tools {

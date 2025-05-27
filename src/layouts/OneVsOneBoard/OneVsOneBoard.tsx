@@ -4,9 +4,12 @@ import { useQuery, gql } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
+import { faFilter } from "@fortawesome/free-solid-svg-icons/faFilter";
 
 interface OneVsOneBoardProps {
   profiles: [PerformerData, PerformerData];
+  /** Executes when the user clicks the filters button. */
+  clickFiltersHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the skip button. */
@@ -27,9 +30,6 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
       <header>
         <h1>One-on-One</h1>
       </header>
-      <div className={styles["filters"]}>
-        <button style={{ width: "100%" }}>Update filters</button>
-      </div>
       <div className={styles["profiles"]}>
         <Profile
           {...props.profiles[0]}
@@ -44,6 +44,13 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
           <span className="sr-only">Undo</span>
           <FontAwesomeIcon icon={faRotateLeft} />
+        </button>
+        <button
+          className="btn btn-secondary"
+          onClick={props.clickFiltersHandler}
+        >
+          <span className="sr-only">Filters</span>
+          <FontAwesomeIcon icon={faFilter} />
         </button>
         <button className="btn btn-secondary" onClick={props.clickSkipHandler}>
           <span className="sr-only">Skip</span>
