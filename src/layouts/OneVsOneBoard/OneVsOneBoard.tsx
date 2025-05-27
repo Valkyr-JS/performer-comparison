@@ -30,7 +30,9 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
 
 export default OneVsOneBoard;
 
-/* ------------------------------------------- Profile ------------------------------------------ */
+/* ---------------------------------------------------------------------------------------------- */
+/*                                        Profile component                                       */
+/* ---------------------------------------------------------------------------------------------- */
 
 interface ProfileProps {
   /** The performer's profile image. */
@@ -42,6 +44,8 @@ interface ProfileProps {
 const Profile = (props: ProfileProps) => {
   const [src, setSrc] = useState(props.cover);
   const [imgID, setImgID] = useState("0");
+
+  /* ---------------------------------------- Change image ---------------------------------------- */
 
   const handleChangeImage: React.MouseEventHandler<HTMLButtonElement> = (_e) =>
     refetch().then(() => {
@@ -82,13 +86,23 @@ const Profile = (props: ProfileProps) => {
     }
   );
 
+  // Disable the change image button while a new image is loading, and if there
+  // are no images avaible.
+  const changeImageDisabled = loading || data.findImages.count === 0;
+
+  /* ------------------------------------------ Component ----------------------------------------- */
+
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
       <img src={src} alt={props.name} />
       <div className={styles["button-list"]}>
         <button type="button">Select</button>
-        <button type="button" onClick={(e) => handleChangeImage(e)}>
+        <button
+          type="button"
+          disabled={changeImageDisabled}
+          onClick={handleChangeImage}
+        >
           <span className="sr-only">Change image for {props.name}</span>
           Change image
         </button>
