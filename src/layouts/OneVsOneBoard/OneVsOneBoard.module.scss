@@ -1,0 +1,87 @@
+@use "sass:math";
+@use "../../scss/helpers";
+@use "../../scss/spacing";
+
+.one-vs-one-board {
+  display: grid;
+  grid-template-rows:
+    [board-top profiles-top] 1fr [profiles-bottom
+    tools-top] auto [tools-bottom board-bottom];
+  gap: spacing.$default;
+
+  width: 100%;
+  padding: spacing.$default;
+
+  .profiles {
+    grid-row: profiles-top/profiles-bottom;
+
+    display: grid;
+    grid-template-columns:
+      [profiles-top profile-1-top] 1fr [profile-1-bottom
+      profile-2-top] 1fr [profile-2-bottom profiles-bottom];
+    gap: spacing.$default;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .tools {
+    grid-row: tools-top/tools-bottom;
+    display: flex;
+    justify-content: center;
+    gap: spacing.$default;
+    margin-top: spacing.$default;
+
+    button {
+      min-height: helpers.pxToRem(40);
+      min-width: helpers.pxToRem(40);
+    }
+  }
+
+  .links {
+    grid-row: links-top/links-bottom;
+    display: flex;
+    justify-content: center;
+  }
+}
+
+.profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  h2 {
+    font-size: 1.25rem;
+  }
+
+  .rank {
+    font-size: 1rem;
+    margin-bottom: math.div(spacing.$default, 2);
+  }
+
+  // Keep images at a 2:3 aspect ratio
+  .profile-image {
+    height: 0;
+    width: 100%;
+    overflow: hidden;
+    padding-top: 150%;
+    position: relative;
+
+    img {
+      object-fit: cover;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .button-list {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      margin-top: spacing.$default;
+    }
+  }
+}
