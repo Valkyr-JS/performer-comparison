@@ -1,3 +1,4 @@
+@use "sass:math";
 @use "../../scss/helpers";
 @use "../../scss/spacing";
 
@@ -59,6 +60,11 @@
 
   h2 {
     font-size: 1.25rem;
+  }
+
+  .rank {
+    font-size: 1rem;
+    margin-bottom: math.div(spacing.$default, 2);
   }
 
   // Keep images at a 2:3 aspect ratio

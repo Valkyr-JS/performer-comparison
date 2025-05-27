@@ -17,11 +17,13 @@ const meta = {
         id: "12",
         cover: url + "/performer/12/image?t=1743556430",
         name: "Performer A",
+        rank: 1586,
       },
       {
         id: "3",
         cover: url + "/performer/3/image?t=1746745345",
         name: "Performer B",
+        rank: 1145,
       },
     ],
   },

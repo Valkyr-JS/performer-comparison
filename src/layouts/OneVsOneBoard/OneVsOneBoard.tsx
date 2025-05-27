@@ -22,6 +22,8 @@ interface PerformerData {
   cover: string;
   id: Performer["id"];
   name: Performer["name"];
+  /** The performer's rank before starting the tournament. */
+  rank: number;
 }
 
 const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
@@ -123,6 +125,7 @@ const Profile = (props: ProfileProps) => {
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
+      <span className={styles["rank"]}>{props.rank ?? "N/A"}</span>
       <div className={styles["profile-image"]}>
         <img src={src} alt={props.name} />
       </div>
