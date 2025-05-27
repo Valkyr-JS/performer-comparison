@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react";
-import { expect, userEvent, waitFor, within } from "@storybook/test";
+import { fn } from "@storybook/test";
 import OneVsOneBoard from "./OneVsOneBoard";
 
 const url = import.meta.env.STORYBOOK_STASH_SERVER;
@@ -8,6 +8,7 @@ const meta = {
   title: "Boards/One vs. One",
   component: OneVsOneBoard,
   args: {
+    clickSelectHandler: fn(),
     profiles: [
       {
         id: "12",

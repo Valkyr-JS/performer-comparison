@@ -3,7 +3,15 @@ import styles from "./OneVsOneBoard.module.scss";
 import { useQuery, gql } from "@apollo/client";
 
 interface OneVsOneBoardProps {
-  profiles: [ProfileProps, ProfileProps];
+  profiles: [PerformerData, PerformerData];
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
+}
+
+interface PerformerData {
+  cover: string;
+  id: Performer["id"];
+  name: Performer["name"];
 }
 
 const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
@@ -16,8 +24,14 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         <button style={{ width: "100%" }}>Update filters</button>
       </div>
       <div className={styles["profiles"]}>
-        <Profile {...props.profiles[0]} />
-        <Profile {...props.profiles[1]} />
+        <Profile
+          {...props.profiles[0]}
+          clickSelectHandler={props.clickSelectHandler}
+        />
+        <Profile
+          {...props.profiles[1]}
+          clickSelectHandler={props.clickSelectHandler}
+        />
       </div>
       <div className={styles["tools"]}>
         <div style={{ marginBottom: "10px" }}>
@@ -36,11 +50,9 @@ export default OneVsOneBoard;
 /*                                        Profile component                                       */
 /* ---------------------------------------------------------------------------------------------- */
 
-interface ProfileProps {
-  /** The performer's profile image. */
-  cover: string;
-  id: Performer["id"];
-  name: Performer["name"];
+interface ProfileProps extends PerformerData {
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
 }
 
 const Profile = (props: ProfileProps) => {
@@ -101,7 +113,11 @@ const Profile = (props: ProfileProps) => {
         <img src={src} alt={props.name} />
       </div>
       <div className={styles["button-list"]}>
-        <button type="button" className="btn btn-primary">
+        <button
+          type="button"
+          className="btn btn-primary"
+          onClick={props.clickSelectHandler}
+        >
           Select
         </button>
         <button
