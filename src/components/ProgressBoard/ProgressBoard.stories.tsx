@@ -5,18 +5,19 @@ const meta = {
   title: "Components/Progress board",
   component: ProgressBoard,
   args: {
-    columnTitles: ["Performer A", "Performer B"],
+    columnTitles: ["A", "B"],
+    reverse: false,
     tableData: [
       ["Lotti", "Sabine", 1],
       ["Marina", "Sabine", 1],
       ["Giselle", "Sabine", 0],
-      ["Giselle", "Serenity", 0],
+      ["Giselle", "Aria", 0],
       ["Giselle", "Sophie", 0],
-      ["Giselle", "Scarlett", 0],
       ["Giselle", "Rhian", 1],
       ["Kelly", "Rhian", 0],
       ["Kelly", "Lizz", 1],
       ["Sammy", "Lizz", 0],
+      ["Sammy", "Taylor", 0],
     ],
     title: "Progress board",
   },
@@ -26,3 +27,9 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
+
+export const Reverse: Story = {
+  args: {
+    reverse: true,
+  },
+};
