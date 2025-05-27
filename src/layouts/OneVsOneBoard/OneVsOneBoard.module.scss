@@ -72,12 +72,12 @@
     }
   }
 
-  button {
-    margin-top: 10px;
-  }
-
   .button-list {
     display: flex;
     flex-direction: column;
+
+    button {
+      margin-top: spacing.$default;
+    }
   }
 }

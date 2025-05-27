@@ -1,4 +1,3 @@
-"use client";
 import React, { useState } from "react";
 import styles from "./OneVsOneBoard.module.scss";
 import { useQuery, gql } from "@apollo/client";
@@ -21,7 +20,10 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         <Profile {...props.profiles[1]} />
       </div>
       <div className={styles["tools"]}>
-        <button style={{ marginBottom: "10px" }}>Undo</button>
+        <div style={{ marginBottom: "10px" }}>
+          <button style={{ marginRight: "10px" }}>Undo</button>
+          <button>Skip</button>
+        </div>
         <button>Leaderboard</button>
       </div>
     </section>
@@ -43,7 +45,7 @@ interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
   const [src, setSrc] = useState(props.cover);
-  const [imgID, setImgID] = useState("0");
+  const [imgID, setImgID] = useState(0);
 
   /* ---------------------------------------- Change image ---------------------------------------- */
 
@@ -99,14 +101,17 @@ const Profile = (props: ProfileProps) => {
         <img src={src} alt={props.name} />
       </div>
       <div className={styles["button-list"]}>
-        <button type="button">Select</button>
+        <button type="button" className="btn btn-primary">
+          Select
+        </button>
         <button
+          className="btn btn-secondary"
           type="button"
           disabled={changeImageDisabled}
           onClick={handleChangeImage}
         >
           <span className="sr-only">Change image for {props.name}</span>
-          Change image
+          New image
         </button>
       </div>
     </div>
