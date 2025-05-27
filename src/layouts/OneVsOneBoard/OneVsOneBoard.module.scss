@@ -5,21 +5,12 @@
 .one-vs-one-board {
   display: grid;
   grid-template-rows:
-    [board-top header-top] auto [header-bottom
-    profiles-top] 1fr [profiles-bottom
+    [board-top profiles-top] 1fr [profiles-bottom
     tools-top] auto [tools-bottom board-bottom];
   gap: spacing.$default;
 
   width: 100%;
   padding: spacing.$default;
-
-  header {
-    grid-row: header-top/header-bottom;
-  }
-
-  h1 {
-    font-size: 1.75rem; // Matches Stash scene pages
-  }
 
   .profiles {
     grid-row: profiles-top/profiles-bottom;
