@@ -7,6 +7,7 @@ import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 
 interface OneVsOneBoardProps {
+  /** Props for the two profiles currently displayed on the board. */
   profiles: [ProfileProps, ProfileProps];
   /** Executes when the user click the pause button. */
   clickPauseHandler: React.MouseEventHandler<HTMLButtonElement>;
@@ -58,8 +59,11 @@ interface ProfileProps {
   changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
+  /** The performer's Stash ID. */
   id: Performer["id"];
+  /** The src for the performer image. */
   imageSrc: string;
+  /** The performer's name. */
   name: Performer["name"];
   /** The performer's rank before starting the tournament. */
   rank: number;
