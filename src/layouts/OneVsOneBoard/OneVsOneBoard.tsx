@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faFilter } from "@fortawesome/free-solid-svg-icons/faFilter";
+import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 
 interface OneVsOneBoardProps {
   profiles: [PerformerData, PerformerData];
@@ -14,6 +15,8 @@ interface OneVsOneBoardProps {
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the skip button. */
   clickSkipHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** Executes when the user click the stop button. */
+  clickStopHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the undo button. */
   clickUndoHandler: React.MouseEventHandler<HTMLButtonElement>;
 }
@@ -41,9 +44,9 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         />
       </div>
       <div className={styles["tools"]}>
-        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
-          <span className="sr-only">Undo</span>
-          <FontAwesomeIcon icon={faRotateLeft} />
+        <button className="btn btn-danger" onClick={props.clickStopHandler}>
+          <span className="sr-only">Stop</span>
+          <FontAwesomeIcon icon={faStop} />
         </button>
         <button
           className="btn btn-secondary"
@@ -51,6 +54,10 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         >
           <span className="sr-only">Filters</span>
           <FontAwesomeIcon icon={faFilter} />
+        </button>
+        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
+          <span className="sr-only">Undo</span>
+          <FontAwesomeIcon icon={faRotateLeft} />
         </button>
         <button className="btn btn-secondary" onClick={props.clickSkipHandler}>
           <span className="sr-only">Skip</span>

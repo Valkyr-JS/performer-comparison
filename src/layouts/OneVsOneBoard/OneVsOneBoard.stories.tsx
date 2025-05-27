@@ -11,6 +11,7 @@ const meta = {
     clickFiltersHandler: fn(),
     clickSelectHandler: fn(),
     clickSkipHandler: fn(),
+    clickStopHandler: fn(),
     clickUndoHandler: fn(),
     profiles: [
       {
