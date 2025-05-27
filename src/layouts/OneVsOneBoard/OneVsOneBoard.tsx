@@ -1,5 +1,7 @@
+"use client";
 import React, { useState } from "react";
 import styles from "./OneVsOneBoard.module.scss";
+import { useQuery, gql } from "@apollo/client";
 
 interface OneVsOneBoardProps {
   profiles: [ProfileProps, ProfileProps];
@@ -32,13 +34,53 @@ export default OneVsOneBoard;
 
 interface ProfileProps {
   /** The performer's profile image. */
-  cover: Performer["image_path"];
+  cover: string;
   id: Performer["id"];
   name: Performer["name"];
 }
 
 const Profile = (props: ProfileProps) => {
-  const [src, _setSrc] = useState(props.cover ?? "FALLBACK-IMAGE-SRC");
+  const [src, setSrc] = useState(props.cover);
+  const [imgID, setImgID] = useState("0");
+
+  const handleChangeImage: React.MouseEventHandler<HTMLButtonElement> = (_e) =>
+    refetch().then(() => {
+      if (!loading && !error) {
+        if (data.findImages.count) {
+          setSrc(data.findImages.images[0].paths.thumbnail);
+          setImgID(data.findImages.images[0].id);
+        }
+      }
+    });
+
+  const { loading, error, data, refetch } = useQuery(
+    gql`
+      query ChangeProfileImage($id: ID!, $imgID: Int!) {
+        findImages(
+          filter: { per_page: 1, sort: "random" }
+          image_filter: {
+            performers: { value: [$id], modifier: INCLUDES }
+            orientation: { value: PORTRAIT }
+            id: { value: $imgID, modifier: NOT_EQUALS }
+          }
+        ) {
+          count
+          images {
+            id
+            paths {
+              thumbnail
+            }
+          }
+        }
+      }
+    `,
+    {
+      variables: {
+        id: props.id,
+        imgID,
+      },
+    }
+  );
 
   return (
     <div className={styles["profile"]}>
@@ -46,8 +88,9 @@ const Profile = (props: ProfileProps) => {
       <img src={src} alt={props.name} />
       <div className={styles["button-list"]}>
         <button type="button">Select</button>
-        <button type="button">
+        <button type="button" onClick={(e) => handleChangeImage(e)}>
           <span className="sr-only">Change image for {props.name}</span>
+          Change image
         </button>
       </div>
     </div>
