@@ -2,6 +2,8 @@ import React from "react";
 import styles from "./ProgressBoard.module.scss";
 
 interface ProgressBoardProps {
+  columnTitles: [string, string];
+  tableData: [string, string][];
   title: string;
 }
 
@@ -9,30 +11,24 @@ const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
   return (
     <section className={styles["progress-board"]}>
       <h2>{props.title}</h2>
-      <table>
+      <table className="table table-striped">
         <thead>
           <tr>
-            <th>Round #</th>
-            <th>Option 1</th>
-            <th>Option 2</th>
+            <th scope="col">Round #</th>
+            <th scope="col">{props.columnTitles[0]}</th>
+            <th scope="col">{props.columnTitles[1]}</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>3</td>
-            <td>Performer D</td>
-            <td>Performer C</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Performer A</td>
-            <td>Performer C</td>
-          </tr>
-          <tr>
-            <td>1</td>
-            <td>Performer A</td>
-            <td>Performer B</td>
-          </tr>
+          {props.tableData.map((options, i) => {
+            return (
+              <tr>
+                <td>{i + 1}</td>
+                <td>{options[0]}</td>
+                <td>{options[1]}</td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </section>

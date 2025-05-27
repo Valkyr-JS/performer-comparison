@@ -8,4 +8,13 @@
   h2 {
     font-size: 1.25rem;
   }
+
+  table {
+    th,
+    td {
+      &:first-child {
+        text-align: center;
+      }
+    }
+  }
 }
