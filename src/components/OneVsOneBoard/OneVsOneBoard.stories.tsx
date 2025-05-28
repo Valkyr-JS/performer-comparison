@@ -8,23 +8,23 @@ const meta = {
   title: "Boards/One vs. One",
   component: OneVsOneBoard,
   args: {
+    changeImageHandler: fn(),
+    clickSelectHandler: fn(),
     clickPauseHandler: fn(),
     clickSkipHandler: fn(),
     clickStopHandler: fn(),
     clickUndoHandler: fn(),
     profiles: [
       {
-        changeImageHandler: fn(),
-        clickSelectHandler: fn(),
         id: "12",
+        imageID: "0",
         imageSrc: url + "/performer/12/image?t=1743556430",
         name: "Performer A",
         rank: 1586,
       },
       {
-        changeImageHandler: fn(),
-        clickSelectHandler: fn(),
         id: "3",
+        imageID: "0",
         imageSrc: url + "/performer/3/image?t=1746745345",
         name: "Performer B",
         rank: 1145,

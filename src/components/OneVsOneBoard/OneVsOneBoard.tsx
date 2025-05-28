@@ -1,14 +1,20 @@
-import React from "react";
-import styles from "./OneVsOneBoard.module.scss";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
+import { useLazyQuery } from "@apollo/client";
+import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
+import styles from "./OneVsOneBoard.module.scss";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
-  profiles: [ProfileProps, ProfileProps];
+  profiles: [GlickoPerformerData, GlickoPerformerData];
+  /** Executes when the user clicks to change the current performer image. */
+  changeImageHandler: (performerID: string, prevID: number) => void;
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the pause button. */
   clickPauseHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the skip button. */
@@ -23,8 +29,16 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
   return (
     <section className={styles["one-vs-one-board"]}>
       <div className={styles["profiles"]}>
-        <Profile {...props.profiles[0]} />
-        <Profile {...props.profiles[1]} />
+        <Profile
+          {...props.profiles[0]}
+          changeImageHandler={props.changeImageHandler}
+          clickSelectHandler={props.clickSelectHandler}
+        />
+        <Profile
+          {...props.profiles[1]}
+          changeImageHandler={props.changeImageHandler}
+          clickSelectHandler={props.clickSelectHandler}
+        />
       </div>
       <div className={styles["tools"]}>
         <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
@@ -54,22 +68,27 @@ export default OneVsOneBoard;
 /*                                        Profile component                                       */
 /* ---------------------------------------------------------------------------------------------- */
 
-interface ProfileProps {
+interface ProfileProps extends GlickoPerformerData {
   /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: React.MouseEventHandler<HTMLButtonElement>;
+  changeImageHandler: (performerID: string, prevID: number) => void;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
-  /** The performer's Stash ID. */
-  id: Performer["id"];
-  /** The src for the performer image. */
-  imageSrc: string;
-  /** The performer's name. */
-  name: Performer["name"];
-  /** The performer's rank before starting the tournament. */
-  rank: number;
 }
 
 const Profile = (props: ProfileProps) => {
+  const [showImageButton, setShowImageButton] = useState(false);
+  const handleImageChange = () =>
+    props.changeImageHandler(props.id, +props.imageID);
+
+  const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
+
+  // Identify on initial load whether to show the image button.
+  useEffect(() => {
+    getPerformerImage({
+      variables: { performerID: props.id, prevID: +props.imageID },
+    }).then((res) => setShowImageButton(res.data.findImages.count > 1));
+  }, []);
+
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
@@ -85,14 +104,16 @@ const Profile = (props: ProfileProps) => {
         >
           Select
         </button>
-        <button
-          className="btn btn-secondary"
-          type="button"
-          onClick={props.changeImageHandler}
-        >
-          <span className="sr-only">Change image for {props.name}</span>
-          New image
-        </button>
+        {showImageButton ? (
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handleImageChange}
+          >
+            <span className="sr-only">Change image for {props.name}</span>
+            New image
+          </button>
+        ) : null}
       </div>
     </div>
   );
