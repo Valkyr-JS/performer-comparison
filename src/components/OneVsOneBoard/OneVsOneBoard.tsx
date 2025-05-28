@@ -8,6 +8,7 @@ import { useLazyQuery } from "@apollo/client";
 import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
 import styles from "./OneVsOneBoard.module.scss";
 import type { GlickoPerformerData } from "../../../types/app";
+import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
@@ -118,7 +119,7 @@ const Profile = (props: ProfileProps) => {
             onClick={handleImageChange}
           >
             <span className="sr-only">Change image for {props.name}</span>
-            New image
+            <FontAwesomeIcon icon={faImage} />
           </button>
         ) : null}
       </div>

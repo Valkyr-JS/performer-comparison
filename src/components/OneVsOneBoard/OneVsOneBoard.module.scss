@@ -1,6 +1,7 @@
 @use "sass:math";
 @use "@/scss/helpers";
 @use "@/scss/spacing";
+@use "@/scss/buttons";
 
 .one-vs-one-board {
   display: grid;
@@ -35,8 +36,7 @@
     margin-top: spacing.$default;
 
     button {
-      min-height: helpers.pxToRem(40);
-      min-width: helpers.pxToRem(40);
+      @include buttons.minimum-size;
     }
   }
 
@@ -95,9 +95,14 @@
     grid-row: buttons-top/buttons-bottom;
     display: flex;
     flex-direction: column;
+    align-items: center;
 
     button {
       margin-top: spacing.$default;
+
+      &:first-child {
+        width: 100%;
+      }
     }
   }
 }
