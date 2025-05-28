@@ -1,18 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./OneVsOneBoard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
-import { useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { GET_PERFORMER_IMAGE } from "../../apollo/queries";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
   profiles: [GlickoPerformerData, GlickoPerformerData];
   /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: (id: string) => void;
+  changeImageHandler: (performerID: string, prevID: number) => void;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the pause button. */
@@ -70,24 +70,24 @@ export default OneVsOneBoard;
 
 interface ProfileProps extends GlickoPerformerData {
   /** Executes when the user clicks to change the current performer image. */
-  changeImageHandler: (id: string) => void;
+  changeImageHandler: (performerID: string, prevID: number) => void;
   /** Executes when the user selects the winning performer. */
   clickSelectHandler: React.MouseEventHandler<HTMLElement>;
 }
 
 const Profile = (props: ProfileProps) => {
-  const handleImageChange = () => props.changeImageHandler(props.id);
+  const [showImageButton, setShowImageButton] = useState(false);
+  const handleImageChange = () =>
+    props.changeImageHandler(props.id, +props.imageID);
 
-  const imageCountState = useQuery(GET_PERFORMER_IMAGE, {
-    variables: { performerID: props.id },
-  });
+  const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
 
-  // Only show the new image button if the performer is in at least two
-  // approrpiate images.
-  const showNewImageButton =
-    !imageCountState.loading &&
-    !imageCountState.error &&
-    imageCountState.data.findImages.count > 1;
+  // Identify on initial load whether to show the image button.
+  useEffect(() => {
+    getPerformerImage({
+      variables: { performerID: props.id, prevID: +props.imageID },
+    }).then((res) => setShowImageButton(res.data.findImages.count > 1));
+  }, []);
 
   return (
     <div className={styles["profile"]}>
@@ -104,7 +104,7 @@ const Profile = (props: ProfileProps) => {
         >
           Select
         </button>
-        {showNewImageButton ? (
+        {showImageButton ? (
           <button
             className="btn btn-secondary"
             type="button"

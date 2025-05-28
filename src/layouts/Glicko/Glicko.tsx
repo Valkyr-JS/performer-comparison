@@ -35,6 +35,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
         (p) => {
           return {
             id: p.id,
+            imageID: "0",
             imageSrc: p.image_path ?? "",
             name: p.name,
             rank:
@@ -54,11 +55,12 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 
-  const handleImageChange = async (id: string) => {
-    getPerformerImage({ variables: { performerID: id } }).then((res) => {
+  const handleImageChange = async (performerID: string, prevID: number) => {
+    getPerformerImage({ variables: { performerID, prevID } }).then((res) => {
       const updatedPerformers = allPerformers.map((p) => {
-        return p.id === id
-          ? { ...p, imageSrc: res.data.findImages.images[0].paths.thumbnail }
+        const { id, paths } = (res.data.findImages.images as Image[])[0];
+        return p.id === performerID
+          ? { ...p, imageID: id, imageSrc: paths.thumbnail ?? "" }
           : p;
       });
       setAllPerformers(updatedPerformers);

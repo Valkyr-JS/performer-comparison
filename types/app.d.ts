@@ -1,6 +1,9 @@
 interface GlickoPerformerData {
   /** The performer's Stash ID. */
   id: Performer["id"];
+  /** The Stash ID of the performer image. 0 denotes the profile image is being
+   * used. */
+  imageID: Image["id"];
   /** The src for the performer image. */
   imageSrc: string;
   /** The performer's name. */
