@@ -5,6 +5,8 @@ import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
+import { useQuery } from "@apollo/client";
+import { GET_PERFORMER_IMAGE } from "../../apollo/queries";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
@@ -76,6 +78,17 @@ interface ProfileProps extends GlickoPerformerData {
 const Profile = (props: ProfileProps) => {
   const handleImageChange = () => props.changeImageHandler(props.id);
 
+  const imageCountState = useQuery(GET_PERFORMER_IMAGE, {
+    variables: { performerID: props.id },
+  });
+
+  // Only show the new image button if the performer is in at least two
+  // approrpiate images.
+  const showNewImageButton =
+    !imageCountState.loading &&
+    !imageCountState.error &&
+    imageCountState.data.findImages.count > 1;
+
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
@@ -91,14 +104,16 @@ const Profile = (props: ProfileProps) => {
         >
           Select
         </button>
-        <button
-          className="btn btn-secondary"
-          type="button"
-          onClick={handleImageChange}
-        >
-          <span className="sr-only">Change image for {props.name}</span>
-          New image
-        </button>
+        {showNewImageButton ? (
+          <button
+            className="btn btn-secondary"
+            type="button"
+            onClick={handleImageChange}
+          >
+            <span className="sr-only">Change image for {props.name}</span>
+            New image
+          </button>
+        ) : null}
       </div>
     </div>
   );

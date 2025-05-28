@@ -21,7 +21,7 @@
       profile-2-top] 1fr [profile-2-bottom profiles-bottom];
     gap: spacing.$default;
     justify-content: center;
-    align-items: center;
+    align-items: baseline;
   }
 
   .tools {
