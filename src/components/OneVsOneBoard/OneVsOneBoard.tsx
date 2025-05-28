@@ -92,7 +92,7 @@ const Profile = (props: ProfileProps) => {
     getPerformerImage({
       variables: { performerID: props.id, prevID: +props.imageID },
     }).then((res) => setShowImageButton(res.data.findImages.count > 1));
-  }, []);
+  }, [props.id]);
 
   return (
     <div className={styles["profile"]}>
