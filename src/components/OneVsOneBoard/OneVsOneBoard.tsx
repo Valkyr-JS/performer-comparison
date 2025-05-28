@@ -93,7 +93,9 @@ const Profile = (props: ProfileProps) => {
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
-      <span className={styles["rating"]}>{props.glicko.rating ?? "N/A"}</span>
+      <span className={styles["rating"]}>
+        {props.player.getRating() ?? "N/A"}
+      </span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />
       </div>

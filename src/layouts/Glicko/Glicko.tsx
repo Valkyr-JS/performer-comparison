@@ -8,8 +8,13 @@ import {
   GLICKO_VOLATILITY_DEFAULT,
 } from "@/constants";
 import styles from "./Glicko.module.scss";
-import { GlickoPerformerData, PerformerCustomFields } from "../../../types/app";
+import {
+  GlickoMatchResult,
+  GlickoPerformerData,
+  PerformerCustomFields,
+} from "../../../types/app";
 import { createMatchList } from "@/gameplay/glicko";
+import { Glicko2, Player } from "glicko2";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -26,13 +31,23 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     variables: { ...props.filter },
   });
 
+  const tournament = new Glicko2();
+
+  // Reusable query setup
   const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
 
+  // Performer data for participating players
   const [performers, setPerformers] = useState<GlickoPerformerData[]>([]);
+
+  // The list of matches, based on pairs of indices referring to the
+  // `performers` list.
   const [matchList, setMatchList] = useState<[number, number][]>([]);
 
-  // The current matchup index
+  // The index of the current match.
   const [matchIndex, _setMatchIndex] = useState<number>(0);
+
+  // The Glicko data for played match results
+  const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -41,18 +56,18 @@ const Glicko: React.FC<GlickoProps> = (props) => {
       const formattedData = (data.findPerformers.performers as Performer[]).map(
         (p) => {
           const customFields = p.custom_fields as PerformerCustomFields;
+          const player = tournament.makePlayer(
+            customFields.glicko_rating ?? GLICKO_RATING_DEFAULT,
+            customFields.glicko_deviation ?? GLICKO_DEVIATION_DEFAULT,
+            customFields.glicko_volatility ?? GLICKO_VOLATILITY_DEFAULT
+          );
+
           return {
-            glicko: {
-              deviation:
-                customFields.glicko_deviation ?? GLICKO_DEVIATION_DEFAULT,
-              rating: customFields.glicko_rating ?? GLICKO_RATING_DEFAULT,
-              volatility:
-                customFields.glicko_volatility ?? GLICKO_VOLATILITY_DEFAULT,
-            },
             id: p.id,
             imageID: "0",
             imageSrc: p.image_path ?? "",
             name: p.name,
+            player,
           };
         }
       );
@@ -87,9 +102,13 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   const handlePause: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handlePause");
   };
+
+  /* -------------------------------------- Handle selection -------------------------------------- */
+
   const handleSelect: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handleSelect");
   };
+
   const handleSkip: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handleSkip");
   };
