@@ -9,6 +9,7 @@ import {
 } from "@/constants";
 import styles from "./Glicko.module.scss";
 import { GlickoPerformerData, PerformerCustomFields } from "../../../types/app";
+import { createMatchList } from "@/gameplay/glicko";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -27,10 +28,11 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
 
-  const [allPerformers, setAllPerformers] = useState<GlickoPerformerData[]>([]);
+  const [performers, setPerformers] = useState<GlickoPerformerData[]>([]);
+  const [matchList, setMatchList] = useState<[number, number][]>([]);
 
-  // The current matchup data
-  const [matchup, setMatchup] = useState<[number, number] | null>(null);
+  // The current matchup index
+  const [matchIndex, _setMatchIndex] = useState<number>(0);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -54,26 +56,28 @@ const Glicko: React.FC<GlickoProps> = (props) => {
           };
         }
       );
-      setAllPerformers(formattedData);
 
-      // Now set the first matchup using the first two performer in the list.
-      setMatchup([0, 1]);
+      // Set the performer data
+      setPerformers(formattedData);
+
+      // Create the matchlist
+      setMatchList(createMatchList(formattedData.length));
     }
   }, [loading]);
 
-  if (loading || error || matchup === null) return null;
+  if (loading || error || matchList.length === 0) return null;
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 
   const handleImageChange = async (performerID: string, prevID: number) => {
     getPerformerImage({ variables: { performerID, prevID } }).then((res) => {
-      const updatedPerformers = allPerformers.map((p) => {
+      const updatedPerformers = performers.map((p) => {
         const { id, paths } = (res.data.findImages.images as Image[])[0];
         return p.id === performerID
           ? { ...p, imageID: id, imageSrc: paths.thumbnail ?? "" }
           : p;
       });
-      setAllPerformers(updatedPerformers);
+      setPerformers(updatedPerformers);
 
       // Referch to clear the cache
       res.refetch();
@@ -99,7 +103,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   return (
     <main className={styles.glicko}>
       <OneVsOneBoard
-        profiles={[allPerformers[matchup[0]], allPerformers[matchup[1]]]}
+        profiles={[
+          performers[matchList[matchIndex][0]],
+          performers[matchList[matchIndex][1]],
+        ]}
         changeImageHandler={handleImageChange}
         clickSelectHandler={handleSelect}
         clickPauseHandler={handlePause}
