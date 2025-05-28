@@ -7,6 +7,7 @@ import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 import { useLazyQuery } from "@apollo/client";
 import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
 import styles from "./OneVsOneBoard.module.scss";
+import type { GlickoPerformerData } from "../../../types/app";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
@@ -92,7 +93,7 @@ const Profile = (props: ProfileProps) => {
   return (
     <div className={styles["profile"]}>
       <h2>{props.name}</h2>
-      <span className={styles["rank"]}>{props.rank ?? "N/A"}</span>
+      <span className={styles["rating"]}>{props.glicko.rating ?? "N/A"}</span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />
       </div>
