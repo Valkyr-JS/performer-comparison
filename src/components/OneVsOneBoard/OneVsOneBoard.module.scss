@@ -17,11 +17,14 @@
 
     display: grid;
     grid-template-columns:
-      [profiles-top profile-1-top] 1fr [profile-1-bottom
-      profile-2-top] 1fr [profile-2-bottom profiles-bottom];
-    gap: spacing.$default;
-    justify-content: center;
-    align-items: baseline;
+      [profiles-start profile-1-start] 1fr [profile-1-end
+      profile-2-start] 1fr [profile-2-end profiles-end];
+    grid-template-rows:
+      [profile-top name-top] 1fr [name-bottom
+      rating-top] auto [rating-bottom
+      image-top] auto [image-bottom
+      buttons-top] auto [buttons-bottom profile-bottom];
+    column-gap: spacing.$default;
   }
 
   .tools {
@@ -45,21 +48,33 @@
 }
 
 .profile {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-template-rows: subgrid;
+  grid-row: profile-top/profile-bottom;
 
   h2 {
+    grid-row: name-top/name-bottom;
+
+    // Align to the bottom of the row if one name takes more rows than the
+    // other.
+    align-self: self-end;
+
     font-size: 1.25rem;
+    text-align: center;
   }
 
-  .rank {
+  .rating {
+    grid-row: rating-top/rating-bottom;
+
     font-size: 1rem;
+    text-align: center;
     margin-bottom: math.div(spacing.$default, 2);
   }
 
   // Keep images at a 2:3 aspect ratio
   .profile-image {
+    grid-row: image-top/image-bottom;
     height: 0;
     width: 100%;
     overflow: hidden;
@@ -77,6 +92,7 @@
   }
 
   .button-list {
+    grid-row: buttons-top/buttons-bottom;
     display: flex;
     flex-direction: column;
 
