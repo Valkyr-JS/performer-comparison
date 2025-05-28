@@ -1,6 +1,6 @@
 @use "sass:math";
-@use "../../scss/helpers";
-@use "../../scss/spacing";
+@use "@/scss/helpers";
+@use "@/scss/spacing";
 
 .one-vs-one-board {
   display: grid;

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import styles from "./OneVsOneBoard.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
 import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 import { useLazyQuery } from "@apollo/client";
-import { GET_PERFORMER_IMAGE } from "../../apollo/queries";
+import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
+import styles from "./OneVsOneBoard.module.scss";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */

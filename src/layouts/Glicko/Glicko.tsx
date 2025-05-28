@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useLazyQuery, useQuery } from "@apollo/client";
-import OneVsOneBoard from "../../components/OneVsOneBoard/OneVsOneBoard";
-import { GET_PERFORMER_IMAGE, GET_PERFORMERS } from "../../apollo/queries";
+import { GET_PERFORMER_IMAGE, GET_PERFORMERS } from "@/apollo/queries";
+import OneVsOneBoard from "@/components/OneVsOneBoard/OneVsOneBoard";
+import { GLICKO_RATING_DEFAULT } from "@/constants";
 import styles from "./Glicko.module.scss";
-import { GLICKO_RATING_DEFAULT } from "../../constants";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
