@@ -44,7 +44,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   const [matchList, setMatchList] = useState<[number, number][]>([]);
 
   // The index of the current match.
-  const [matchIndex, _setMatchIndex] = useState<number>(0);
+  const [matchIndex, setMatchIndex] = useState<number>(0);
 
   // The Glicko data for played match results
   const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
@@ -82,6 +82,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   if (loading || error || matchList.length === 0) return null;
 
+  // matchList.forEach((m) => {
+  //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
+  // });
+
   /* ------------------------------------- Handle image change ------------------------------------ */
 
   const handleImageChange = async (performerID: string, prevID: number) => {
@@ -118,7 +122,8 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     // Update the match results list
     setMatchResults([...matchResults, result]);
 
-    // Set up the next match
+    // Set up the next match if there is one
+    if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
   };
 
   const handleSkip: React.MouseEventHandler<HTMLButtonElement> = () => {
