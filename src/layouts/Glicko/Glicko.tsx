@@ -105,8 +105,20 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   /* -------------------------------------- Handle selection -------------------------------------- */
 
-  const handleSelect: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleSelect");
+  /** Handle selecting a winner from a pair, where `winner` is the index on the
+   * board of the winning player, i.e. `0` for left or `1` for right. */
+  const handleSelect = (winner: 0 | 1) => {
+    // Create the match result
+    const result: GlickoMatchResult = [
+      performers[matchList[matchIndex][0]].player,
+      performers[matchList[matchIndex][1]].player,
+      winner,
+    ];
+
+    // Update the match results list
+    setMatchResults([...matchResults, result]);
+
+    // Set up the next match
   };
 
   const handleSkip: React.MouseEventHandler<HTMLButtonElement> = () => {
