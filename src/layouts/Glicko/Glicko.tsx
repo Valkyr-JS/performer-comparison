@@ -86,6 +86,8 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
   // });
 
+  // console.log(matchResults)
+
   /* ------------------------------------- Handle image change ------------------------------------ */
 
   const handleImageChange = async (performerID: string, prevID: number) => {
@@ -126,9 +128,24 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
   };
 
+  /* -------------------------------------- Handle skip match ------------------------------------- */
+
+  /** Handle skipping a match, i.e. announcing a draw. */
   const handleSkip: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleSkip");
+    // Create the match result
+    const result: GlickoMatchResult = [
+      performers[matchList[matchIndex][0]].player,
+      performers[matchList[matchIndex][1]].player,
+      0.5,
+    ];
+
+    // Update the match results list
+    setMatchResults([...matchResults, result]);
+
+    // Set up the next match if there is one
+    if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
   };
+
   const handleStop: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handleStop");
   };
