@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import Glicko from "./Glicko";
+import { fn } from "@storybook/test";
 
 const meta = {
   title: "Layouts/Glicko",
@@ -11,6 +12,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    endTournamentHandler: fn(),
     filter: {
       genders: ["FEMALE" as GenderEnum],
       limit: 15,

@@ -19,6 +19,8 @@ import ProgressBoard from "@/components/ProgressBoard/ProgressBoard";
 import Modal from "@/components/Modal/Modal";
 
 interface GlickoProps {
+  /** Function to execute when the user completes the tournament. */
+  endTournamentHandler: () => void;
   /** The filters for fetching eligible performers for the tournament. */
   filter: {
     genders: GenderEnum[];
@@ -215,6 +217,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
       </main>
       <EndTournamentModal
         closeModalHandler={handleCloseEndModal}
+        endTournamentHandler={props.endTournamentHandler}
         show={showEndModal}
       />
     </>
@@ -229,6 +232,7 @@ export default Glicko;
 
 const EndTournamentModal: React.FC<{
   closeModalHandler: () => void;
+  endTournamentHandler: () => void;
   show: boolean;
 }> = (props) => {
   document.body.classList[props.show ? "add" : "remove"]("modal-open");
@@ -236,7 +240,22 @@ const EndTournamentModal: React.FC<{
 
   return (
     <Modal
-      buttons={[]}
+      buttons={[
+        {
+          key: "confirm",
+          children: "Confirm",
+          className: "btn btn-primary",
+          onClick: props.endTournamentHandler,
+          type: "submit",
+        },
+        {
+          key: "cancel",
+          children: "Cancel",
+          className: "btn btn-secondary",
+          onClick: props.closeModalHandler,
+          type: "button",
+        },
+      ]}
       closeModalHandler={props.closeModalHandler}
       show={props.show}
       title="Tournament complete"
