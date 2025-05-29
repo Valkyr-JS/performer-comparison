@@ -1,4 +1,5 @@
 import React from "react";
+import { default as cx } from "classnames";
 import styles from "./ProgressBoard.module.scss";
 
 interface ProgressBoardProps {
@@ -28,13 +29,15 @@ const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((options, i) => {
+          {tableData.map((rowData, i) => {
             const round = props.reverse ? tableData.length - i : i + 1;
+            const cell1Classes = cx({ [styles["winner"]]: rowData[2] === 0 });
+            const cell2Classes = cx({ [styles["winner"]]: rowData[2] === 1 });
             return (
               <tr key={round}>
                 <td>{round}</td>
-                <td>{options[0]}</td>
-                <td>{options[1]}</td>
+                <td className={cell1Classes}>{rowData[0]}</td>
+                <td className={cell2Classes}>{rowData[1]}</td>
               </tr>
             );
           })}
