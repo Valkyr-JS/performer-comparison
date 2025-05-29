@@ -2,14 +2,18 @@
   "name": "performer-comparison",
   "version": "0.1.0",
   "description": "A Stash tool/game for ranking performers.",
-  "main": "./src/main.ts",
   "type": "commonjs",
   "scripts": {
     "build:plugin": "rollup --config ./rollup.config.mjs && node generateYaml.mjs",
     "build:yaml": "node generateYaml.mjs",
-    "start": "npm run watch",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "develop": "gatsby develop",
+    "start": "gatsby develop",
+    "build": "gatsby build",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "typecheck": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -22,14 +26,13 @@
   },
   "homepage": "https://github.com/Valkyr-JS/performer-comparison#readme",
   "peerDependencies": {
-    "@apollo/client": "^3.13.8",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
     "mousetrap": "^1.6.5",
     "mousetrap-pause": "^1.0.0",
-    "react": "^17.0.2",
+    "react": "^18.2.0",
     "react-bootstrap": "^1.6.8",
-    "react-dom": "^17.0.2",
+    "react-dom": "^18.2.0",
     "react-intl": "^6.8.9",
     "react-router-dom": "^5.3.4",
     "react-select": "^5.10.1"
@@ -45,6 +48,7 @@
     "@storybook/addon-interactions": "^8.6.14",
     "@storybook/addon-onboarding": "^8.6.14",
     "@storybook/blocks": "^8.6.14",
+    "@types/node": "^20.11.19",
     "@storybook/react": "^8.6.14",
     "@storybook/react-vite": "^8.6.14",
     "@storybook/test": "^8.6.14",
@@ -66,9 +70,16 @@
     "write-yaml-file": "^5.0.0"
   },
   "dependencies": {
+    "@apollo/client": "^3.13.8",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "classnames": "^2.5.1",
+    "gatsby": "^5.14.1",
+    "gatsby-plugin-manifest": "^5.14.0",
+    "gatsby-plugin-sass": "^6.14.0",
     "glicko2": "^1.2.1",
-    "graphql": "^16.11.0"
+    "graphql": "^16.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "sass": "^1.89.0"
   }
 }
