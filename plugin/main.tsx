@@ -1,8 +1,8 @@
-import { faChessRook } from "@fortawesome/free-solid-svg-icons/faChessRook";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React from "react";
+import { faChessRook } from "@fortawesome/free-solid-svg-icons";
 
 const { PluginApi } = window;
-const { React } = PluginApi;
+const FontAwesomeIcon = window.PluginApi.components.Icon;
 
 // Wait for the navbar to load, as this contains the
 PluginApi.patch.instead(

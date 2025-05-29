@@ -40,7 +40,7 @@ const banner = `window.require = function(name) {
 }`;
 
 export default {
-  input: "src/main.tsx",
+  input: "plugin/main.tsx",
   output: {
     banner,
     file: "dist/" + pluginID + ".js",
@@ -50,7 +50,7 @@ export default {
     commonjs(),
     copy({
       targets: [
-        { src: "src/source.yml", dest: "dist", rename: pluginID + ".yml" },
+        { src: "plugin/source.yml", dest: "dist", rename: pluginID + ".yml" },
       ],
     }),
     del({ targets: "dist" }),

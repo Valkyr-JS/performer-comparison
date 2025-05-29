@@ -4,7 +4,7 @@ import type {
 } from "@fortawesome/fontawesome-svg-core";
 import * as FontAwesomeRegular from "@fortawesome/free-regular-svg-icons";
 import * as FontAwesomeSolid from "@fortawesome/free-solid-svg-icons";
-import type { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type ReactRouterDOM from "@types/react-router-dom";
 import Mousetrap from "mousetrap";
 import * as ReactIntl from "react-intl";
@@ -95,7 +95,7 @@ interface IPluginApi {
 interface StashPluginComponents {
   BooleanSetting?: (props: IBooleanSetting) => React.JSX.Element;
   HoverPopover: (props: IHoverPopover) => React.JSX.Element;
-  Icon: (props: IIcon) => FontAwesomeIcon;
+  Icon: typeof FontAwesomeIcon;
   "PerformerDetailsPanel.DetailGroup": (
     props: IPerformerDetailsPanelDetailGroup
   ) => React.JSX.Element;

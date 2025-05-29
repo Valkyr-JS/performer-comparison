@@ -1,5 +1,5 @@
 import writeYamlFile from 'write-yaml-file'
-import pluginSettings from "./src/settings.json" with { type: "json" }
+import pluginSettings from "./plugin/settings.json" with { type: "json" }
 import * as pkg from "./package.json" with { type: "json" };
 import fs from 'fs';
 
@@ -26,9 +26,9 @@ const json = {
   version: pkg.default.version,
   ui: {
     javascript: jsFiles,
-    css: cssFiles
+    css: cssFiles.length ? cssFiles : undefined
   },
-  settings: pluginSettings
+  settings: Object.keys(pluginSettings).length ? pluginSettings : undefined
 }
 
 writeYamlFile('dist/' + filename, json).then(() => {
