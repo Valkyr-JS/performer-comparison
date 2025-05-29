@@ -19,6 +19,9 @@ import ProgressBoard from "@/components/ProgressBoard/ProgressBoard";
 import Modal from "@/components/Modal/Modal";
 
 interface GlickoProps {
+  /** Function to execute when the user abandons the tournament without saving
+   * their progress. */
+  abandonTournamentHandler: () => void;
   /** Function to execute when the user completes the tournament. */
   endTournamentHandler: () => void;
   /** The filters for fetching eligible performers for the tournament. */
@@ -53,8 +56,9 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   // The Glicko data for played match results
   const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
 
-  // The show state of the end tournament modal
+  // The show state of various modals
   const [showEndModal, setShowEndModal] = useState(false);
+  const [showAbandonModal, setShowAbandonModal] = useState(false);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -157,9 +161,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     else setShowEndModal(true);
   };
 
-  const handleStop: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleStop");
-  };
+  /* ---------------------------------- Handle abandon tournament --------------------------------- */
+
+  const handleStop: React.MouseEventHandler<HTMLButtonElement> = () =>
+    setShowAbandonModal(true);
 
   /* -------------------------------------- Handle undo match ------------------------------------- */
 
@@ -183,6 +188,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   /* ------------------------------------------- Modals ------------------------------------------- */
 
+  /** Handle closing the "End tournament" modal. */
   const handleCloseEndModal = () => {
     // Close the modal
     setShowEndModal(false);
@@ -191,6 +197,9 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     const updatedMatchResults = matchResults.slice(0, -1);
     setMatchResults(updatedMatchResults);
   };
+
+  /** Handle closing the "Abandon tournament" modal. */
+  const handleCloseAbandonModal = () => setShowAbandonModal(false);
 
   /* ------------------------------------------ Component ----------------------------------------- */
 
@@ -222,6 +231,11 @@ const Glicko: React.FC<GlickoProps> = (props) => {
         endTournamentHandler={props.endTournamentHandler}
         show={showEndModal}
       />
+      <AbandonTournamentModal
+        abandonTournamentHandler={props.abandonTournamentHandler}
+        closeModalHandler={handleCloseAbandonModal}
+        show={showAbandonModal}
+      />
     </>
   );
 };
@@ -232,6 +246,8 @@ export default Glicko;
 /*                                      End Tournament Modal                                      */
 /* ---------------------------------------------------------------------------------------------- */
 
+/** Modal that appears when ending a tournament after all matches have been
+ * completed. */
 const EndTournamentModal: React.FC<{
   closeModalHandler: () => void;
   endTournamentHandler: () => void;
@@ -244,18 +260,18 @@ const EndTournamentModal: React.FC<{
     <Modal
       buttons={[
         {
-          key: "confirm",
-          children: "Confirm",
-          className: "btn btn-primary",
-          onClick: props.endTournamentHandler,
-          type: "submit",
-        },
-        {
           key: "cancel",
           children: "Cancel",
           className: "btn btn-secondary",
           onClick: props.closeModalHandler,
           type: "button",
+        },
+        {
+          key: "confirm",
+          children: "Confirm",
+          className: "btn btn-primary",
+          onClick: props.endTournamentHandler,
+          type: "submit",
         },
       ]}
       closeModalHandler={props.closeModalHandler}
@@ -263,6 +279,52 @@ const EndTournamentModal: React.FC<{
       title="Tournament complete"
     >
       <p>Would you like to submit and view the results?</p>
+    </Modal>
+  );
+};
+
+/* ---------------------------------------------------------------------------------------------- */
+/*                                      Abandon tournament modal                                     */
+/* ---------------------------------------------------------------------------------------------- */
+
+/** Modal that appears when ending a tournament before all matches have been completed. */
+const AbandonTournamentModal: React.FC<{
+  abandonTournamentHandler: () => void;
+  closeModalHandler: () => void;
+  show: boolean;
+}> = (props) => {
+  document.body.classList[props.show ? "add" : "remove"]("modal-open");
+  document.body.style = props.show ? "padding-right: 15px" : "";
+
+  return (
+    <Modal
+      buttons={[
+        {
+          key: "no",
+          children: "Cancel",
+          className: "btn btn-secondary",
+          onClick: props.closeModalHandler,
+          type: "submit",
+        },
+        {
+          key: "yes",
+          children: "Abandon",
+          className: "btn btn-danger",
+          onClick: props.abandonTournamentHandler,
+          type: "button",
+        },
+      ]}
+      closeModalHandler={props.closeModalHandler}
+      show={props.show}
+      title="Abandon tournament?"
+    >
+      <>
+        <p>
+          If you abandon the current tournament, you will quit and lose all
+          progress. This cannot be undone.
+        </p>
+        <p>Are you sure you wish to abandon the tournament?</p>
+      </>
     </Modal>
   );
 };
