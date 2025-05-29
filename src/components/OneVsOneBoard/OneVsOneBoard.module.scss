@@ -24,7 +24,8 @@
       [profile-top name-top] 1fr [name-bottom
       rating-top] auto [rating-bottom
       image-top] auto [image-bottom
-      buttons-top] auto [buttons-bottom profile-bottom];
+      select-button-top] auto [select-button-bottom
+      image-button-top] auto [image-button-bottom profile-bottom];
     column-gap: spacing.$default;
   }
 
@@ -53,17 +54,6 @@
   grid-template-rows: subgrid;
   grid-row: profile-top/profile-bottom;
 
-  h2 {
-    grid-row: name-top/name-bottom;
-
-    // Align to the bottom of the row if one name takes more rows than the
-    // other.
-    align-self: self-end;
-
-    font-size: 1.25rem;
-    text-align: center;
-  }
-
   .rating {
     grid-row: rating-top/rating-bottom;
 
@@ -91,18 +81,16 @@
     }
   }
 
-  .button-list {
-    grid-row: buttons-top/buttons-bottom;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  button {
+    margin-top: spacing.$default;
 
-    button {
-      margin-top: spacing.$default;
+    &:first-of-type {
+      grid-row: select-button-top/select-button-bottom;
+    }
 
-      &:first-child {
-        width: 100%;
-      }
+    &:nth-of-type(2) {
+      grid-row: image-button-top/image-button-bottom;
+      justify-self: center;
     }
   }
 }

@@ -97,32 +97,29 @@ const Profile = (props: ProfileProps) => {
 
   return (
     <div className={styles["profile"]}>
-      <h2>{props.name}</h2>
       <span className={styles["rating"]}>
         {props.player.getRating() ?? "N/A"}
       </span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />
       </div>
-      <div className={styles["button-list"]}>
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => props.clickSelectHandler(props.position)}
+      >
+        {props.name}
+      </button>
+      {showImageButton ? (
         <button
+          className="btn btn-secondary"
           type="button"
-          className="btn btn-primary"
-          onClick={() => props.clickSelectHandler(props.position)}
+          onClick={handleImageChange}
         >
-          Select
+          <span className="sr-only">Change image for {props.name}</span>
+          <FontAwesomeIcon icon={faImage} />
         </button>
-        {showImageButton ? (
-          <button
-            className="btn btn-secondary"
-            type="button"
-            onClick={handleImageChange}
-          >
-            <span className="sr-only">Change image for {props.name}</span>
-            <FontAwesomeIcon icon={faImage} />
-          </button>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 };
