@@ -29,6 +29,9 @@ interface GlickoProps {
     genders: GenderEnum[];
     limit: number;
   };
+  /** Function to execute when the user pauses the tournament, saving their
+   * progress. */
+  pauseTournamentHandler: () => void;
 }
 
 const Glicko: React.FC<GlickoProps> = (props) => {
@@ -57,8 +60,9 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
 
   // The show state of various modals
-  const [showEndModal, setShowEndModal] = useState(false);
   const [showAbandonModal, setShowAbandonModal] = useState(false);
+  const [showEndModal, setShowEndModal] = useState(false);
+  const [showPauseModal, setShowPauseModal] = useState(false);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -116,9 +120,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     });
   };
 
-  const handlePause: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handlePause");
-  };
+  /* ---------------------------------------- Handle pause ---------------------------------------- */
+
+  const handlePause: React.MouseEventHandler<HTMLButtonElement> = () =>
+    setShowPauseModal(true);
 
   /* -------------------------------------- Handle selection -------------------------------------- */
 
@@ -201,6 +206,9 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   /** Handle closing the "Abandon tournament" modal. */
   const handleCloseAbandonModal = () => setShowAbandonModal(false);
 
+  /** Handle closing the "Pause tournament" modal. */
+  const handleClosePauseModal = () => setShowPauseModal(false);
+
   /* ------------------------------------------ Component ----------------------------------------- */
 
   return (
@@ -236,6 +244,11 @@ const Glicko: React.FC<GlickoProps> = (props) => {
         closeModalHandler={handleCloseAbandonModal}
         show={showAbandonModal}
       />
+      <PauseTournamentModal
+        pauseTournamentHandler={props.pauseTournamentHandler}
+        closeModalHandler={handleClosePauseModal}
+        show={showPauseModal}
+      />
     </>
   );
 };
@@ -243,7 +256,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 export default Glicko;
 
 /* ---------------------------------------------------------------------------------------------- */
-/*                                      End Tournament Modal                                      */
+/*                                      End tournament modal                                      */
 /* ---------------------------------------------------------------------------------------------- */
 
 /** Modal that appears when ending a tournament after all matches have been
@@ -276,7 +289,7 @@ const EndTournamentModal: React.FC<{
       ]}
       closeModalHandler={props.closeModalHandler}
       show={props.show}
-      title="Tournament complete"
+      title="Tournament complete!"
     >
       <p>Would you like to submit and view the results?</p>
     </Modal>
@@ -287,7 +300,8 @@ const EndTournamentModal: React.FC<{
 /*                                      Abandon tournament modal                                     */
 /* ---------------------------------------------------------------------------------------------- */
 
-/** Modal that appears when ending a tournament before all matches have been completed. */
+/** Modal that appears when ending a tournament before all matches have been
+ * completed, and discarding the progress. */
 const AbandonTournamentModal: React.FC<{
   abandonTournamentHandler: () => void;
   closeModalHandler: () => void;
@@ -308,7 +322,7 @@ const AbandonTournamentModal: React.FC<{
         },
         {
           key: "yes",
-          children: "Abandon",
+          children: "Yes, abandon",
           className: "btn btn-danger",
           onClick: props.abandonTournamentHandler,
           type: "button",
@@ -316,7 +330,7 @@ const AbandonTournamentModal: React.FC<{
       ]}
       closeModalHandler={props.closeModalHandler}
       show={props.show}
-      title="Abandon tournament?"
+      title="Abandon the tournament?"
     >
       <>
         <p>
@@ -324,6 +338,54 @@ const AbandonTournamentModal: React.FC<{
           progress. This cannot be undone.
         </p>
         <p>Are you sure you wish to abandon the tournament?</p>
+      </>
+    </Modal>
+  );
+};
+
+/* ---------------------------------------------------------------------------------------------- */
+/*                                     Pause tournament modal                                     */
+/* ---------------------------------------------------------------------------------------------- */
+
+/** Modal that appears when ending a tournament before all matches have been
+ * completed, but saving the progress. */
+const PauseTournamentModal: React.FC<{
+  pauseTournamentHandler: () => void;
+  closeModalHandler: () => void;
+  show: boolean;
+}> = (props) => {
+  document.body.classList[props.show ? "add" : "remove"]("modal-open");
+  document.body.style = props.show ? "padding-right: 15px" : "";
+
+  return (
+    <Modal
+      buttons={[
+        {
+          key: "no",
+          children: "Cancel",
+          className: "btn btn-secondary",
+          onClick: props.closeModalHandler,
+          type: "submit",
+        },
+        {
+          key: "yes",
+          children: "Yes, pause",
+          className: "btn btn-primary",
+          onClick: props.pauseTournamentHandler,
+          type: "button",
+        },
+      ]}
+      closeModalHandler={props.closeModalHandler}
+      show={props.show}
+      title="Pause the tournament?"
+    >
+      <>
+        <p>
+          If you pause the current tournament, your progress will be saved to
+          your Stash config. You can then continue the tournament at a later
+          date.
+        </p>
+        <p>Would you like to pause the tournament?</p>
       </>
     </Modal>
   );
