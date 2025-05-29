@@ -16,6 +16,7 @@ const meta = {
     clickSkipHandler: fn(),
     clickStopHandler: fn(),
     clickUndoHandler: fn(),
+    matchIndex: 0,
     profiles: [
       {
         id: "12",
