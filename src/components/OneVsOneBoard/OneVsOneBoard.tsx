@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
+import { useLazyQuery } from "@apollo/client";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faForwardStep } from "@fortawesome/free-solid-svg-icons/faForwardStep";
-import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
+import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 import { faPause } from "@fortawesome/free-solid-svg-icons/faPause";
+import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
-import { useLazyQuery } from "@apollo/client";
+import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
 import styles from "./OneVsOneBoard.module.scss";
 import type { GlickoPerformerData } from "../../../types/app";
-import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 
 interface OneVsOneBoardProps {
   /** Executes when the user clicks to change the current performer image. */
@@ -104,7 +105,9 @@ const Profile = (props: ProfileProps) => {
   return (
     <div className={styles["profile"]}>
       <span className={styles["rating"]}>
-        Rating: {props.player.getRating() ?? "N/A"}
+        <FontAwesomeIcon icon={faTrophy} />{" "}
+        <span className="sr-only">{props.name} rating: </span>
+        {props.player.getRating() ?? "N/A"}
       </span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />

@@ -1,20 +1,27 @@
 import React from "react";
+import { default as cx } from "classnames";
 import styles from "./ProgressBoard.module.scss";
 
 interface ProgressBoardProps {
   columnTitles: [string, string];
   /** Whether to display the progress in reverse order, i.e. latest > oldest
    * instead of oldest > latest. */
-  reverse: boolean;
+  reverse?: boolean;
   /** The column data, and the index of the winner. */
-  tableData: [optionA: string, optionB: string, winner: 0 | 1][];
+  tableData: [optionA: string, optionB: string, winner: 0 | 0.5 | 1][];
   title: string;
 }
 
 const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
-  const tableData = props.reverse
+  const tableData = !!props.reverse
     ? [...props.tableData].reverse()
     : props.tableData;
+
+  const noDataRow = (
+    <tr>
+      <td colSpan={3}>The tournament has not yet started.</td>
+    </tr>
+  );
 
   return (
     <section className={styles["progress-board"]}>
@@ -28,16 +35,24 @@ const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((options, i) => {
-            const round = props.reverse ? tableData.length - i : i + 1;
-            return (
-              <tr key={round}>
-                <td>{round}</td>
-                <td>{options[0]}</td>
-                <td>{options[1]}</td>
-              </tr>
-            );
-          })}
+          {tableData.length === 0
+            ? noDataRow
+            : tableData.map((rowData, i) => {
+                const round = props.reverse ? tableData.length - i : i + 1;
+                const cell1Classes = cx({
+                  [styles["winner"]]: rowData[2] === 0,
+                });
+                const cell2Classes = cx({
+                  [styles["winner"]]: rowData[2] === 1,
+                });
+                return (
+                  <tr key={round}>
+                    <td>{round}</td>
+                    <td className={cell1Classes}>{rowData[0]}</td>
+                    <td className={cell2Classes}>{rowData[1]}</td>
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
     </section>

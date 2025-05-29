@@ -15,6 +15,7 @@ import {
 } from "../../../types/app";
 import { createMatchList } from "@/gameplay/glicko";
 import { Glicko2 } from "glicko2";
+import ProgressBoard from "@/components/ProgressBoard/ProgressBoard";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -86,7 +87,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
   // });
 
-  console.log(matchResults);
+  // console.log(matchResults);
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 
@@ -161,6 +162,15 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     setMatchResults(updatedMatchResults);
   };
 
+  /* --------------------------------------- Progress board --------------------------------------- */
+
+  const tableData: [string, string, 0 | 0.5 | 1][] = matchResults.map(
+    (m, i) => {
+      const match = matchList[i];
+      return [performers[match[0]].name, performers[match[1]].name, m[2]];
+    }
+  );
+
   /* ------------------------------------------ Component ----------------------------------------- */
 
   return (
@@ -177,6 +187,12 @@ const Glicko: React.FC<GlickoProps> = (props) => {
           performers[matchList[matchIndex][0]],
           performers[matchList[matchIndex][1]],
         ]}
+      />
+      <ProgressBoard
+        columnTitles={["Choice A", "Choice B"]}
+        reverse
+        tableData={tableData}
+        title="Progress"
       />
     </main>
   );
