@@ -89,7 +89,7 @@ interface ProfileProps extends GlickoPerformerData {
 }
 
 const Profile = (props: ProfileProps) => {
-  const [showImageButton, setShowImageButton] = useState(false);
+  const [enableImageButton, setEnableImageButton] = useState(false);
   const handleImageChange = () =>
     props.changeImageHandler(props.id, +props.imageID);
 
@@ -99,7 +99,7 @@ const Profile = (props: ProfileProps) => {
   useEffect(() => {
     getPerformerImage({
       variables: { performerID: props.id, prevID: +props.imageID },
-    }).then((res) => setShowImageButton(res.data.findImages.count > 1));
+    }).then((res) => setEnableImageButton(res.data.findImages.count > 1));
   }, [props.id]);
 
   return (
@@ -119,16 +119,15 @@ const Profile = (props: ProfileProps) => {
       >
         {props.name}
       </button>
-      {showImageButton ? (
-        <button
-          className="btn btn-secondary"
-          type="button"
-          onClick={handleImageChange}
-        >
-          <span className="sr-only">Change image for {props.name}</span>
-          <FontAwesomeIcon icon={faImage} />
-        </button>
-      ) : null}
+      <button
+        className="btn btn-secondary"
+        disabled={!enableImageButton}
+        onClick={handleImageChange}
+        type="button"
+      >
+        <span className="sr-only">Change image for {props.name}</span>
+        <FontAwesomeIcon icon={faImage} />
+      </button>
     </div>
   );
 };

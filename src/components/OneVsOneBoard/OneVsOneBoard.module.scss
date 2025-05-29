@@ -83,6 +83,7 @@
   }
 
   button {
+    @include buttons.minimum-size;
     &:first-of-type {
       grid-row: select-button-top/select-button-bottom;
     }
