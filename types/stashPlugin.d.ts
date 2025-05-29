@@ -114,6 +114,10 @@ interface PatchableComponents {
 
 interface PatchableComponentsAfter {
   (
+    component: "MainNavBar.MenuItems",
+    fn: (props: React.PropsWithChildren<{}>) => React.JSX.Element[]
+  ): void;
+  (
     component: "MainNavBar.UtilityItems",
     fn: (props: React.PropsWithChildren) => React.JSX.Element[]
   ): void;
@@ -125,12 +129,24 @@ interface PatchableComponentsAfter {
 
 interface PatchableComponentsBefore {
   (
+    component: "MainNavBar.MenuItems",
+    fn: (props: React.PropsWithChildren<{}>) => React.JSX.Element[]
+  ): void;
+  (
     component: "PerformerDetailsPanel.DetailGroup",
     fn: (props: IPerformerDetailsPanelDetailGroup) => React.JSX.Element[]
   ): void;
 }
 
 interface PatchableComponentsInstead {
+  (
+    component: "MainNavBar.MenuItems",
+    fn: (
+      props: React.PropsWithChildren<{}>,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
   (
     component: "MainNavBar.UtilityItems",
     fn: (
