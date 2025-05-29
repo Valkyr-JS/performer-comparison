@@ -3,7 +3,9 @@ import copy from "rollup-plugin-copy";
 import del from "rollup-plugin-delete";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
+import postcss from "rollup-plugin-postcss";
 import replace from "@rollup/plugin-replace";
+import terser from '@rollup/plugin-terser';
 import typescript from "@rollup/plugin-typescript";
 import * as pkg from "./package.json" with { type: "json" };
 
@@ -59,5 +61,7 @@ export default {
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
     typescript(),
+    postcss({ extract: pluginID + ".css", minimize: true, sourceMap: false }),
+    terser()
   ],
 };
