@@ -87,7 +87,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
   // });
 
-  console.log(matchResults);
+  // console.log(matchResults);
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 

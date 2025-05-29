@@ -17,6 +17,12 @@ const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
     ? [...props.tableData].reverse()
     : props.tableData;
 
+  const noDataRow = (
+    <tr>
+      <td colSpan={3}>The tournament has not yet started.</td>
+    </tr>
+  );
+
   return (
     <section className={styles["progress-board"]}>
       <h2>{props.title}</h2>
@@ -29,18 +35,24 @@ const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((rowData, i) => {
-            const round = props.reverse ? tableData.length - i : i + 1;
-            const cell1Classes = cx({ [styles["winner"]]: rowData[2] === 0 });
-            const cell2Classes = cx({ [styles["winner"]]: rowData[2] === 1 });
-            return (
-              <tr key={round}>
-                <td>{round}</td>
-                <td className={cell1Classes}>{rowData[0]}</td>
-                <td className={cell2Classes}>{rowData[1]}</td>
-              </tr>
-            );
-          })}
+          {tableData.length === 0
+            ? noDataRow
+            : tableData.map((rowData, i) => {
+                const round = props.reverse ? tableData.length - i : i + 1;
+                const cell1Classes = cx({
+                  [styles["winner"]]: rowData[2] === 0,
+                });
+                const cell2Classes = cx({
+                  [styles["winner"]]: rowData[2] === 1,
+                });
+                return (
+                  <tr key={round}>
+                    <td>{round}</td>
+                    <td className={cell1Classes}>{rowData[0]}</td>
+                    <td className={cell2Classes}>{rowData[1]}</td>
+                  </tr>
+                );
+              })}
         </tbody>
       </table>
     </section>
