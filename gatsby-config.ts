@@ -35,6 +35,12 @@ const config: GatsbyConfig = {
         },
       },
     },
+    {
+      resolve: "gatsby-plugin-apollo",
+      options: {
+        uri: "http://192.168.0.20:7999/graphql",
+      },
+    },
   ],
 };
 

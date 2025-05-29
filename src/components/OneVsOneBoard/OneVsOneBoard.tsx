@@ -8,7 +8,7 @@ import { faRotateLeft } from "@fortawesome/free-solid-svg-icons/faRotateLeft";
 import { faStop } from "@fortawesome/free-solid-svg-icons/faStop";
 import { faTrophy } from "@fortawesome/free-solid-svg-icons/faTrophy";
 import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
-import styles from "./OneVsOneBoard.module.scss";
+import * as styles from "./OneVsOneBoard.module.scss";
 import type { GlickoPerformerData } from "../../../types/app";
 
 interface OneVsOneBoardProps {

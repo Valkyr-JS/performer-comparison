@@ -1,6 +1,6 @@
 import React from "react";
 import { default as cx } from "classnames";
-import styles from "./ProgressBoard.module.scss";
+import * as styles from "./ProgressBoard.module.scss";
 
 interface ProgressBoardProps {
   columnTitles: [string, string];

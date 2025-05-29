@@ -7,7 +7,7 @@ import {
   GLICKO_RATING_DEFAULT,
   GLICKO_VOLATILITY_DEFAULT,
 } from "@/constants";
-import styles from "./Glicko.module.scss";
+import * as styles from "./Glicko.module.scss";
 import {
   GlickoMatchResult,
   GlickoPerformerData,

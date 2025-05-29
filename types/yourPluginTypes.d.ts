@@ -1,8 +1,4 @@
-module "*.module.scss" {
-  const content: Record<string, string>;
-  export default content;
-}
-
+declare module "*.module.scss";
 interface ImportMetaEnv {
   readonly STORYBOOK_STASH_SERVER: string;
 }
