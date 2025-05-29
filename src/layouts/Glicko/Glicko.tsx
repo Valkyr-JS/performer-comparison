@@ -151,8 +151,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     // Update the match results list
     setMatchResults([...matchResults, result]);
 
-    // Set up the next match if there is one
+    // Set up the next match if there is one, else open the end tournament
+    // modal.
     if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
+    else setShowEndModal(true);
   };
 
   const handleStop: React.MouseEventHandler<HTMLButtonElement> = () => {
