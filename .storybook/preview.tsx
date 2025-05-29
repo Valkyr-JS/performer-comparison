@@ -2,6 +2,7 @@ import type { Preview } from "@storybook/react";
 import { INITIAL_VIEWPORTS } from "@storybook/addon-viewport";
 import { SbDecApolloProvider } from "./decorators";
 import "./stash.index.css";
+import "@/scss/global.scss";
 
 const preview: Preview = {
   decorators: [SbDecApolloProvider],
