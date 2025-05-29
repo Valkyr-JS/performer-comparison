@@ -232,6 +232,7 @@ const EndTournamentModal: React.FC<{
   show: boolean;
 }> = (props) => {
   document.body.classList[props.show ? "add" : "remove"]("modal-open");
+  document.body.style = props.show ? "padding-right: 15px" : "";
 
   return (
     <Modal

@@ -12,41 +12,33 @@ interface ModalProps extends React.PropsWithChildren {
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
-  const modalClasses = cx("modal", {
-    show: props.show,
-  });
+  const modalClasses = cx("modal", "show");
   const modalStyles = {
-    display: props.show ? "block" : undefined,
+    display: "block",
   };
 
   if (!props.show) return null;
   return (
-    <section className={modalClasses} style={modalStyles} tabIndex={-1}>
-      <div className="modal-dialog modal-dialog-centered">
-        <div className="modal-content">
-          <div className="modal-header">
-            <h5 className="modal-title">{props.title}</h5>
-            <button
-              type="button"
-              className="close"
-              data-dismiss="modal"
-              aria-label="Close"
-              onClick={props.closeModalHandler}
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div className="modal-body">{props.children}</div>
-          {props.buttons.length ? (
-            <div className="modal-footer">
-              {props.buttons.map((btn) => (
-                <button {...btn} />
-              ))}
+    <>
+      <section className={modalClasses} style={modalStyles} tabIndex={-1}>
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">{props.title}</h5>
             </div>
-          ) : null}
+            <div className="modal-body">{props.children}</div>
+            {props.buttons.length ? (
+              <div className="modal-footer">
+                {props.buttons.map((btn) => (
+                  <button {...btn} />
+                ))}
+              </div>
+            ) : null}
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+      <div className="modal-backdrop show" />
+    </>
   );
 };
 
