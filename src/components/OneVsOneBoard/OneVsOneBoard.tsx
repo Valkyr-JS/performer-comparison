@@ -11,8 +11,6 @@ import type { GlickoPerformerData } from "../../../types/app";
 import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 
 interface OneVsOneBoardProps {
-  /** Props for the two profiles currently displayed on the board. */
-  profiles: [GlickoPerformerData, GlickoPerformerData];
   /** Executes when the user clicks to change the current performer image. */
   changeImageHandler: (performerID: string, prevID: number) => void;
   /** Executes when the user click the pause button. */
@@ -25,6 +23,10 @@ interface OneVsOneBoardProps {
   clickStopHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the undo button. */
   clickUndoHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** The zero-based index of the current match. */
+  matchIndex: number;
+  /** Props for the two profiles currently displayed on the board. */
+  profiles: [GlickoPerformerData, GlickoPerformerData];
 }
 
 const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
@@ -45,7 +47,11 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
         />
       </div>
       <div className={styles["tools"]}>
-        <button className="btn btn-secondary" onClick={props.clickUndoHandler}>
+        <button
+          className="btn btn-secondary"
+          disabled={props.matchIndex === 0}
+          onClick={props.clickUndoHandler}
+        >
           <span className="sr-only">Undo</span>
           <FontAwesomeIcon icon={faRotateLeft} />
         </button>
