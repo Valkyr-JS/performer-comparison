@@ -16,6 +16,7 @@ import {
 import { createMatchList } from "@/gameplay/glicko";
 import { Glicko2 } from "glicko2";
 import ProgressBoard from "@/components/ProgressBoard/ProgressBoard";
+import Modal from "@/components/Modal/Modal";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -49,6 +50,9 @@ const Glicko: React.FC<GlickoProps> = (props) => {
 
   // The Glicko data for played match results
   const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
+
+  // The show state of the end tournament modal
+  const [showEndModal, setShowEndModal] = useState(false);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -125,8 +129,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     // Update the match results list
     setMatchResults([...matchResults, result]);
 
-    // Set up the next match if there is one
+    // Set up the next match if there is one, else open the end tournament
+    // modal.
     if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
+    else setShowEndModal(true);
   };
 
   /* -------------------------------------- Handle skip match ------------------------------------- */
@@ -171,31 +177,70 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     }
   );
 
+  /* ------------------------------------------- Modals ------------------------------------------- */
+
+  const handleCloseEndModal = () => {
+    // Close the modal
+    setShowEndModal(false);
+
+    // Undo the last result
+    const updatedMatchResults = matchResults.slice(0, -1);
+    setMatchResults(updatedMatchResults);
+  };
+
   /* ------------------------------------------ Component ----------------------------------------- */
 
   return (
-    <main className={styles.glicko}>
-      <OneVsOneBoard
-        changeImageHandler={handleImageChange}
-        clickSelectHandler={handleSelect}
-        clickPauseHandler={handlePause}
-        clickSkipHandler={handleSkip}
-        clickStopHandler={handleStop}
-        clickUndoHandler={handleUndo}
-        matchIndex={matchIndex}
-        profiles={[
-          performers[matchList[matchIndex][0]],
-          performers[matchList[matchIndex][1]],
-        ]}
+    <>
+      <main className={styles.glicko}>
+        <OneVsOneBoard
+          changeImageHandler={handleImageChange}
+          clickSelectHandler={handleSelect}
+          clickPauseHandler={handlePause}
+          clickSkipHandler={handleSkip}
+          clickStopHandler={handleStop}
+          clickUndoHandler={handleUndo}
+          matchIndex={matchIndex}
+          profiles={[
+            performers[matchList[matchIndex][0]],
+            performers[matchList[matchIndex][1]],
+          ]}
+        />
+        <ProgressBoard
+          columnTitles={["Choice A", "Choice B"]}
+          reverse
+          tableData={tableData}
+          title="Progress"
+        />
+      </main>
+      <EndTournamentModal
+        closeModalHandler={handleCloseEndModal}
+        show={showEndModal}
       />
-      <ProgressBoard
-        columnTitles={["Choice A", "Choice B"]}
-        reverse
-        tableData={tableData}
-        title="Progress"
-      />
-    </main>
+    </>
   );
 };
 
 export default Glicko;
+
+/* ---------------------------------------------------------------------------------------------- */
+/*                                      End Tournament Modal                                      */
+/* ---------------------------------------------------------------------------------------------- */
+
+const EndTournamentModal: React.FC<{
+  closeModalHandler: () => void;
+  show: boolean;
+}> = (props) => {
+  document.body.classList[props.show ? "add" : "remove"]("modal-open");
+
+  return (
+    <Modal
+      buttons={[]}
+      closeModalHandler={props.closeModalHandler}
+      show={props.show}
+      title="Tournament complete"
+    >
+      <p>Would you like to submit and view the results?</p>
+    </Modal>
+  );
+};

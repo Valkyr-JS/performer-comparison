@@ -6,8 +6,9 @@ interface ModalProps extends React.PropsWithChildren {
     React.ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   >[];
-  title: string;
+  closeModalHandler: () => void;
   show: boolean;
+  title: string;
 }
 
 const Modal: React.FC<ModalProps> = (props) => {
@@ -17,6 +18,8 @@ const Modal: React.FC<ModalProps> = (props) => {
   const modalStyles = {
     display: props.show ? "block" : undefined,
   };
+
+  if (!props.show) return null;
   return (
     <section className={modalClasses} style={modalStyles} tabIndex={-1}>
       <div className="modal-dialog modal-dialog-centered">
@@ -28,6 +31,7 @@ const Modal: React.FC<ModalProps> = (props) => {
               className="close"
               data-dismiss="modal"
               aria-label="Close"
+              onClick={props.closeModalHandler}
             >
               <span aria-hidden="true">&times;</span>
             </button>
