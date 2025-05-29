@@ -18,5 +18,6 @@ export const Default: Story = {
       genders: ["FEMALE" as GenderEnum],
       limit: 5,
     },
+    pauseTournamentHandler: fn(),
   },
 };
