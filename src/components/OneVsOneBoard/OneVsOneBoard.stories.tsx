@@ -1,8 +1,10 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import OneVsOneBoard from "./OneVsOneBoard";
+import { Glicko2 } from "glicko2";
 
 const url = import.meta.env.STORYBOOK_STASH_SERVER;
+const tournament = new Glicko2();
 
 const meta = {
   title: "Boards/One vs. One",
@@ -20,14 +22,14 @@ const meta = {
         imageID: "0",
         imageSrc: url + "/performer/12/image?t=1743556430",
         name: "Performer A",
-        glicko: { deviation: 350, rating: 1586, volatility: 0.06 },
+        player: tournament.makePlayer(1586),
       },
       {
         id: "3",
         imageID: "0",
         imageSrc: url + "/performer/3/image?t=1746745345",
         name: "Performer B",
-        glicko: { deviation: 350, rating: 1145, volatility: 0.06 },
+        player: tournament.makePlayer(1145),
       },
     ],
   },

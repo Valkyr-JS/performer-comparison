@@ -8,8 +8,13 @@ import {
   GLICKO_VOLATILITY_DEFAULT,
 } from "@/constants";
 import styles from "./Glicko.module.scss";
-import { GlickoPerformerData, PerformerCustomFields } from "../../../types/app";
+import {
+  GlickoMatchResult,
+  GlickoPerformerData,
+  PerformerCustomFields,
+} from "../../../types/app";
 import { createMatchList } from "@/gameplay/glicko";
+import { Glicko2, Player } from "glicko2";
 
 interface GlickoProps {
   /** The filters for fetching eligible performers for the tournament. */
@@ -26,13 +31,23 @@ const Glicko: React.FC<GlickoProps> = (props) => {
     variables: { ...props.filter },
   });
 
+  const tournament = new Glicko2();
+
+  // Reusable query setup
   const [getPerformerImage] = useLazyQuery(GET_PERFORMER_IMAGE);
 
+  // Performer data for participating players
   const [performers, setPerformers] = useState<GlickoPerformerData[]>([]);
+
+  // The list of matches, based on pairs of indices referring to the
+  // `performers` list.
   const [matchList, setMatchList] = useState<[number, number][]>([]);
 
-  // The current matchup index
-  const [matchIndex, _setMatchIndex] = useState<number>(0);
+  // The index of the current match.
+  const [matchIndex, setMatchIndex] = useState<number>(0);
+
+  // The Glicko data for played match results
+  const [matchResults, setMatchResults] = useState<GlickoMatchResult[]>([]);
 
   // Once data is available, update the required data
   useEffect(() => {
@@ -41,18 +56,18 @@ const Glicko: React.FC<GlickoProps> = (props) => {
       const formattedData = (data.findPerformers.performers as Performer[]).map(
         (p) => {
           const customFields = p.custom_fields as PerformerCustomFields;
+          const player = tournament.makePlayer(
+            customFields.glicko_rating ?? GLICKO_RATING_DEFAULT,
+            customFields.glicko_deviation ?? GLICKO_DEVIATION_DEFAULT,
+            customFields.glicko_volatility ?? GLICKO_VOLATILITY_DEFAULT
+          );
+
           return {
-            glicko: {
-              deviation:
-                customFields.glicko_deviation ?? GLICKO_DEVIATION_DEFAULT,
-              rating: customFields.glicko_rating ?? GLICKO_RATING_DEFAULT,
-              volatility:
-                customFields.glicko_volatility ?? GLICKO_VOLATILITY_DEFAULT,
-            },
             id: p.id,
             imageID: "0",
             imageSrc: p.image_path ?? "",
             name: p.name,
+            player,
           };
         }
       );
@@ -66,6 +81,10 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   }, [loading]);
 
   if (loading || error || matchList.length === 0) return null;
+
+  // matchList.forEach((m) => {
+  //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
+  // });
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 
@@ -87,9 +106,26 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   const handlePause: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handlePause");
   };
-  const handleSelect: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleSelect");
+
+  /* -------------------------------------- Handle selection -------------------------------------- */
+
+  /** Handle selecting a winner from a pair, where `winner` is the index on the
+   * board of the winning player, i.e. `0` for left or `1` for right. */
+  const handleSelect = (winner: 0 | 1) => {
+    // Create the match result
+    const result: GlickoMatchResult = [
+      performers[matchList[matchIndex][0]].player,
+      performers[matchList[matchIndex][1]].player,
+      winner,
+    ];
+
+    // Update the match results list
+    setMatchResults([...matchResults, result]);
+
+    // Set up the next match if there is one
+    if (matchIndex < matchList.length - 1) setMatchIndex(matchIndex + 1);
   };
+
   const handleSkip: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handleSkip");
   };

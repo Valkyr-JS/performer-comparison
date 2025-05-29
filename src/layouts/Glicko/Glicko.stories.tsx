@@ -13,7 +13,7 @@ export const Default: Story = {
   args: {
     filter: {
       genders: ["FEMALE" as GenderEnum],
-      limit: 10,
+      limit: 15,
     },
   },
 };

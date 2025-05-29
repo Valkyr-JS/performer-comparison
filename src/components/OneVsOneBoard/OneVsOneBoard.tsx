@@ -8,16 +8,17 @@ import { useLazyQuery } from "@apollo/client";
 import { GET_PERFORMER_IMAGE } from "@/apollo/queries";
 import styles from "./OneVsOneBoard.module.scss";
 import type { GlickoPerformerData } from "../../../types/app";
+import { faImage } from "@fortawesome/free-solid-svg-icons/faImage";
 
 interface OneVsOneBoardProps {
   /** Props for the two profiles currently displayed on the board. */
   profiles: [GlickoPerformerData, GlickoPerformerData];
   /** Executes when the user clicks to change the current performer image. */
   changeImageHandler: (performerID: string, prevID: number) => void;
-  /** Executes when the user selects the winning performer. */
-  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
   /** Executes when the user click the pause button. */
   clickPauseHandler: React.MouseEventHandler<HTMLButtonElement>;
+  /** Executes when the user selects the winning performer. */
+  clickSelectHandler: (winner: 0 | 1) => void;
   /** Executes when the user click the skip button. */
   clickSkipHandler: React.MouseEventHandler<HTMLButtonElement>;
   /** Executes when the user click the stop button. */
@@ -34,11 +35,13 @@ const OneVsOneBoard: React.FC<OneVsOneBoardProps> = (props) => {
           {...props.profiles[0]}
           changeImageHandler={props.changeImageHandler}
           clickSelectHandler={props.clickSelectHandler}
+          position={0}
         />
         <Profile
           {...props.profiles[1]}
           changeImageHandler={props.changeImageHandler}
           clickSelectHandler={props.clickSelectHandler}
+          position={1}
         />
       </div>
       <div className={styles["tools"]}>
@@ -73,7 +76,9 @@ interface ProfileProps extends GlickoPerformerData {
   /** Executes when the user clicks to change the current performer image. */
   changeImageHandler: (performerID: string, prevID: number) => void;
   /** Executes when the user selects the winning performer. */
-  clickSelectHandler: React.MouseEventHandler<HTMLElement>;
+  clickSelectHandler: (winner: 0 | 1) => void;
+  /** Whether the profile is on the left, i.e. `0`, or right, i.e. `1` */
+  position: 0 | 1;
 }
 
 const Profile = (props: ProfileProps) => {
@@ -88,34 +93,33 @@ const Profile = (props: ProfileProps) => {
     getPerformerImage({
       variables: { performerID: props.id, prevID: +props.imageID },
     }).then((res) => setShowImageButton(res.data.findImages.count > 1));
-  }, []);
+  }, [props.id]);
 
   return (
     <div className={styles["profile"]}>
-      <h2>{props.name}</h2>
-      <span className={styles["rating"]}>{props.glicko.rating ?? "N/A"}</span>
+      <span className={styles["rating"]}>
+        Rating: {props.player.getRating() ?? "N/A"}
+      </span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />
       </div>
-      <div className={styles["button-list"]}>
+      <button
+        type="button"
+        className="btn btn-primary"
+        onClick={() => props.clickSelectHandler(props.position)}
+      >
+        {props.name}
+      </button>
+      {showImageButton ? (
         <button
+          className="btn btn-secondary"
           type="button"
-          className="btn btn-primary"
-          onClick={props.clickSelectHandler}
+          onClick={handleImageChange}
         >
-          Select
+          <span className="sr-only">Change image for {props.name}</span>
+          <FontAwesomeIcon icon={faImage} />
         </button>
-        {showImageButton ? (
-          <button
-            className="btn btn-secondary"
-            type="button"
-            onClick={handleImageChange}
-          >
-            <span className="sr-only">Change image for {props.name}</span>
-            New image
-          </button>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 };

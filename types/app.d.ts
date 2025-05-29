@@ -1,18 +1,8 @@
 import type { Player } from "glicko2";
 
-interface GlickoData {
-  /** The accuracy of a performer's rating, where the lower the number, the higher the accuracy. */
-  deviation: number;
-  /** The performer's rating. */
-  rating: number;
-  /** The degree of expected fluctuation in a performer's rating, based on how
-   * erratic the performer's performances are. */
-  volatility: number;
-}
+declare type GlickoMatchResult = [Player, Player, 0 | 0.5 | 1];
 
 declare interface GlickoPerformerData {
-  /** The performer's glicko rating data before the start of the tournament. */
-  glicko: GlickoData;
   /** The performer's Stash ID. */
   id: Performer["id"];
   /** The Stash ID of the performer image. 0 denotes the profile image is being
@@ -22,6 +12,8 @@ declare interface GlickoPerformerData {
   imageSrc: string;
   /** The performer's name. */
   name: Performer["name"];
+  /** The Glicko player data */
+  player: Player;
 }
 
 declare interface GlickoTournament {
