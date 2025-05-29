@@ -5,14 +5,14 @@ interface ProgressBoardProps {
   columnTitles: [string, string];
   /** Whether to display the progress in reverse order, i.e. latest > oldest
    * instead of oldest > latest. */
-  reverse: boolean;
+  reverse?: boolean;
   /** The column data, and the index of the winner. */
-  tableData: [optionA: string, optionB: string, winner: 0 | 1][];
+  tableData: [optionA: string, optionB: string, winner: 0 | 0.5 | 1][];
   title: string;
 }
 
 const ProgressBoard: React.FC<ProgressBoardProps> = (props) => {
-  const tableData = props.reverse
+  const tableData = !!props.reverse
     ? [...props.tableData].reverse()
     : props.tableData;
 
