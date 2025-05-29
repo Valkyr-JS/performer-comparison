@@ -12,10 +12,11 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
   args: {
+    abandonTournamentHandler: fn(),
     endTournamentHandler: fn(),
     filter: {
       genders: ["FEMALE" as GenderEnum],
-      limit: 15,
+      limit: 5,
     },
   },
 };
