@@ -86,7 +86,7 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   //   console.log(performers[m[0]].name + " vs. " + performers[m[1]].name);
   // });
 
-  // console.log(matchResults)
+  console.log(matchResults);
 
   /* ------------------------------------- Handle image change ------------------------------------ */
 
@@ -149,9 +149,19 @@ const Glicko: React.FC<GlickoProps> = (props) => {
   const handleStop: React.MouseEventHandler<HTMLButtonElement> = () => {
     console.log("handleStop");
   };
+
+  /* -------------------------------------- Handle undo match ------------------------------------- */
+
   const handleUndo: React.MouseEventHandler<HTMLButtonElement> = () => {
-    console.log("handleUndo");
+    // Set up the previous match
+    setMatchIndex(matchIndex - 1);
+
+    // Remove the previous result
+    const updatedMatchResults = matchResults.slice(0, -1);
+    setMatchResults(updatedMatchResults);
   };
+
+  /* ------------------------------------------ Component ----------------------------------------- */
 
   return (
     <main className={styles.glicko}>
