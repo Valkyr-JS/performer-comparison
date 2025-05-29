@@ -22,8 +22,8 @@
       profile-2-start] 1fr [profile-2-end profiles-end];
     grid-template-rows:
       [profile-top name-top] 1fr [name-bottom
-      rating-top] auto [rating-bottom
       image-top] auto [image-bottom
+      rating-top] auto [rating-bottom
       select-button-top] auto [select-button-bottom
       image-button-top] auto [image-button-bottom profile-bottom];
     column-gap: spacing.$default;
@@ -53,13 +53,14 @@
   grid-template-columns: subgrid;
   grid-template-rows: subgrid;
   grid-row: profile-top/profile-bottom;
+  row-gap: spacing.$small;
 
   .rating {
     grid-row: rating-top/rating-bottom;
+    font-style: italic;
 
     font-size: 1rem;
     text-align: center;
-    margin-bottom: math.div(spacing.$default, 2);
   }
 
   // Keep images at a 2:3 aspect ratio
@@ -82,8 +83,6 @@
   }
 
   button {
-    margin-top: spacing.$default;
-
     &:first-of-type {
       grid-row: select-button-top/select-button-bottom;
     }

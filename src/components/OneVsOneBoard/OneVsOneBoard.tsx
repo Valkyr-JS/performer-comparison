@@ -98,7 +98,7 @@ const Profile = (props: ProfileProps) => {
   return (
     <div className={styles["profile"]}>
       <span className={styles["rating"]}>
-        {props.player.getRating() ?? "N/A"}
+        Rating: {props.player.getRating() ?? "N/A"}
       </span>
       <div className={styles["profile-image"]}>
         <img src={props.imageSrc} alt={props.name} />
